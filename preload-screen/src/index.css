@@ -1,0 +1,40 @@
+/* src/style.css */
+#eye-catching {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+}
+
+#eye-catching.fade-out {
+  opacity: 0;
+}
+
+.preload-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #ccc;
+  border-top-color: #1890ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.preload-text {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #666;
+}

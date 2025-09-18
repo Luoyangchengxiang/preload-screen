@@ -1,0 +1,14 @@
+{
+  "name": "preload-screen",
+  "version": "1.0.0",
+  "description": "页面挂载前显示loading动画",
+  "main": "index.ts",
+  "keywords": [
+    "preloadScreen",
+    "screen",
+    "preload"
+  ],
+  "author": "aaron.cheng.luoyang@gmail.com",
+  "license": "ISC",
+  "packageManager": "pnpm@10.15.0"
+}
