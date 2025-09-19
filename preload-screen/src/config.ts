@@ -1,16 +1,17 @@
 /*
  * @Date: 2025-09-18 15:58:13
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-19 10:23:10
+ * @LastEditTime: 2025-09-19 14:30:39
  * @FilePath: \sourceHTML\preload-screen\src\config.ts
  */
 type eleId = 'root' | 'app';
+export type PreloadMode = 'auto' | 'manual';
 
 export interface PreloadConfig {
   debug?: boolean;
   text?: string;
   color?: string;
-  mode?: 'auto' | 'manual';
+  mode?: PreloadMode;
   minShow?: number;
   fadeOut?: number;
   elId: eleId | string
@@ -21,7 +22,7 @@ export interface PreloadConfig {
  * @param {*} text：显示文案
  * @param {*} minShow：最少显示时间（ms）
  * @param {*} fadeOut：淡出动画时间（ms）
- * @param {*} mode：auto / manual，控制是否监听 window.load 自动消失
+ * @param {*} mode：auto / manual
  * @return {*}
  */
 export const config: PreloadConfig = {

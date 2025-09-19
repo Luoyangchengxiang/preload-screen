@@ -2,7 +2,19 @@
   "name": "preload-screen",
   "version": "1.0.0",
   "description": "页面挂载前显示loading动画",
-  "main": "index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rimraf dist",
+    "build:ts": "tsc -p tsconfig.json",
+    "copy:assets": "cpy \"src/*.css\" dist --flat",
+    "build": "pnpm run clean && pnpm run build:ts && pnpm run copy:assets",
+    "prepare": "pnpm run build"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Luoyangchengxiang/preload-screen.git"
@@ -19,5 +31,11 @@
   },
   "license": "MIT",
   "homepage": "https://github.com/Luoyangchengxiang/preload-screen#readme",
-  "packageManager": "pnpm@10.15.0"
+  "packageManager": "pnpm@10.15.0",
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "cpy-cli": "^6.0.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.9.2"
+  }
 }

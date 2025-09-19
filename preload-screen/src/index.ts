@@ -1,12 +1,7 @@
-/*
- * @Date: 2025-09-18 13:55:36
- * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-19 11:07:24
- * @FilePath: \sourceHTML\preload-screen\src\index.ts
- */
+
 import "./style.css"
-import { config } from "./config.ts";
-import type { PreloadConfig } from "./config.ts";
+import { config } from "./config";
+import type { PreloadConfig, PreloadMode } from "./config";
 
 declare global {
   interface Window {
@@ -16,13 +11,13 @@ declare global {
 
 class PreloadScreen {
   private static instance: PreloadScreen; // 单例
-  private elId: string; // 容器id React为root，Vue为app
+  private elId: string; // 根元素容器id React为root，Vue为app
   private el: HTMLElement | null = null; // 加载元素
   private removed = false; // 是否已移除
   private MIN_SHOW_MS: number; // 显示时间
   private FADE_OUT_MS: number; // 淡出时间
   private createdAt: number; // 创建时间
-  private mode: 'auto' | 'manual'; // 模式 auto: 自动，manual: 手动
+  private mode: PreloadMode; // 模式 auto: 自动，manual: 手动
   private text: string; // 文案
   private color: string; // 加载环的颜色
   private debug: boolean; // 是否开启debug
@@ -43,8 +38,12 @@ class PreloadScreen {
 
     this.createDOM();
     this.bindAutoRemove();
+
+    if (this.debug) console.log(`[PreloadScreen] constructor options: ${JSON.stringify(processedConfig)}`, performance.now());
   }
   public static init(options?: PreloadConfig) {
+    if (options?.debug) console.log(`[PreloadScreen] init setupInstance options: ${JSON.stringify(options)}`, performance.now());
+
     if (!PreloadScreen.instance) {
       PreloadScreen.instance = new PreloadScreen(options);
     } else if (options) {
@@ -55,6 +54,7 @@ class PreloadScreen {
 
   private setupConfig(options: Partial<PreloadConfig>) {
     const prevMode = this.mode;
+    if (options.debug) console.log(`[PreloadScreen] setupConfig prevMode: ${prevMode}`, performance.now());
     this.elId = options.elId ?? this.elId;
     this.MIN_SHOW_MS = options.minShow ?? this.MIN_SHOW_MS;
     this.FADE_OUT_MS = options.fadeOut ?? this.FADE_OUT_MS;
@@ -65,6 +65,7 @@ class PreloadScreen {
     this.color = options.color ?? this.color;
     this.debug = options.debug ?? this.debug;
 
+    if (options.debug) console.log(`[PreloadScreen] setupConfig options: ${JSON.stringify(options)}`, performance.now());
     if (this.el) {
       const spinner = this.el.querySelector<HTMLElement>('.chyk-preload-spinner');
       const textEl = this.el.querySelector<HTMLElement>('.chyk-preload-text');
@@ -73,6 +74,7 @@ class PreloadScreen {
     }
 
     if (prevMode !== 'auto' && this.mode === 'auto') {
+      if (options.debug) console.log(`[PreloadScreen] setupConfig PreloadModeChange. So run bindAutoRemove.`, performance.now());
       this.bindAutoRemove();
     }
   }
@@ -81,10 +83,6 @@ class PreloadScreen {
     const wrapper = document.createElement('div');
     wrapper.id = 'chyk-preload-screen';
 
-    // wrapper.innerHTML = `
-    //   <div class="chyk-preload-spinner" style="border-top-color:${this.color}"></div>
-    //   <div class="chyk-preload-text">${this.text}</div>
-    // `;
     const spinner = document.createElement('div');
     spinner.className = 'chyk-preload-spinner';
     spinner.style.borderTopColor = this.color;
@@ -104,10 +102,9 @@ class PreloadScreen {
 
 
   private bindAutoRemove() {
-    if (this.removed || this.autoBound) return;
-    this.autoBound = true;
     let _that = this;
-
+    if (_that.debug) console.log(`[PreloadScreen] bindAutoRemove mode`, _that.mode, _that.mode === 'auto', performance.now());
+    if (_that.removed || _that.autoBound) return;
     // 监听内容变化的函数
     const observeContentChange = (element: HTMLElement, callback: (hasContent: boolean) => void) => {
       // 初始判断内容是否为空
@@ -136,6 +133,8 @@ class PreloadScreen {
     }
 
     const _bindObserve = (root: HTMLElement) => {
+      if (_that.autoBound) return;
+      _that.autoBound = true;
       const stopObserving = observeContentChange(root, (hasContent: boolean) => {
         if (hasContent) {
           stopObserving();
@@ -143,10 +142,11 @@ class PreloadScreen {
         }
       });
     }
+
     // 自动模式：资源加载完毕
     if (_that.mode === 'auto') {
+      if (_that.debug) console.log(`[PreloadScreen] bindAutoRemove root`, performance.now());
       const _root: HTMLElement | null = document.getElementById(_that.elId);
-
       if (_root) {
         // 启动监听，回调函数接收布尔值（true=有内容，false=空）
         _bindObserve(_root)
