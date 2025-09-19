@@ -3,12 +3,21 @@
   "version": "1.0.0",
   "description": "页面挂载前显示loading动画",
   "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Luoyangchengxiang/preload-screen.git"
+  },
   "keywords": [
+    "react",
     "preloadScreen",
     "screen",
     "preload"
   ],
-  "author": "aaron.cheng.luoyang@gmail.com",
-  "license": "ISC",
+  "author": {
+    "name": "Aaron Cheng",
+    "email": "aaron.cheng.luoyang@gmail.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Luoyangchengxiang/preload-screen#readme",
   "packageManager": "pnpm@10.15.0"
 }

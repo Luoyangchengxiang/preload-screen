@@ -1,5 +1,5 @@
 /* src/style.css */
-#eye-catching {
+#chyk-preload-screen {
   position: fixed;
   top: 0;
   left: 0;
@@ -14,11 +14,11 @@
   transition: opacity 0.5s ease;
 }
 
-#eye-catching.fade-out {
+#chyk-preload-screen.fade-out {
   opacity: 0;
 }
 
-.preload-spinner {
+.chyk-preload-spinner {
   width: 48px;
   height: 48px;
   border: 4px solid #ccc;
@@ -33,7 +33,7 @@
   }
 }
 
-.preload-text {
+.chyk-preload-text {
   margin-top: 12px;
   font-size: 14px;
   color: #666;
