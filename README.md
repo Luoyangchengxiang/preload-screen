@@ -11,7 +11,7 @@
  - 🛡️ 最少显示时间，避免闪屏
  - 🔧 可作为独立插件封装发布
 
-<!-- ## 📦 安装
+## 📦 安装
 
 ```bash
 npm install preload-screen --save
@@ -19,7 +19,7 @@ npm install preload-screen --save
 yarn add preload-screen
 # 或者
 pnpm add preload-screen
-``` -->
+```
 
 ## 🔨 使用方法
 
