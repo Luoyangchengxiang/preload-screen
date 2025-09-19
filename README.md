@@ -11,6 +11,16 @@
  - 🛡️ 最少显示时间，避免闪屏
  - 🔧 可作为独立插件封装发布
 
+<!-- ## 📦 安装
+
+```bash
+npm install preload-screen --save
+# 或者
+yarn add preload-screen
+# 或者
+pnpm add preload-screen
+``` -->
+
 ## 🔨 使用方法
 
 ### 1. 在入口文件中引入插件  
