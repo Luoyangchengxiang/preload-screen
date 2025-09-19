@@ -1,6 +1,6 @@
 {
   "name": "preload-screen",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "页面挂载前显示loading动画",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -23,7 +23,10 @@
     "react",
     "preloadScreen",
     "screen",
-    "preload"
+    "preload",
+    "loading",
+    "skeleton",
+    "spinner"
   ],
   "author": {
     "name": "Aaron Cheng",
