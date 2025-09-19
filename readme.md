@@ -1,7 +1,7 @@
 <!--
  * @Date: 2025-09-18 15:11:07
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-19 10:28:42
+ * @LastEditTime: 2025-09-19 10:40:04
  * @FilePath: \sourceHTML\readme.md
 -->
 # preload-screen  
@@ -118,5 +118,3 @@ pnpm add preload-screen
 
 [MIT © 2025](https://github.com/Luoyangchengxiang/preload-screen?tab=MIT-1-ov-file#)
 
-## 版本更新
-1.0.1
