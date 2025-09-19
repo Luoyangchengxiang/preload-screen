@@ -26,7 +26,8 @@
     "preload",
     "loading",
     "skeleton",
-    "spinner"
+    "spinner",
+    "preload-screen"
   ],
   "author": {
     "name": "Aaron Cheng",
