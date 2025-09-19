@@ -1,9 +1,3 @@
-<!--
- * @Date: 2025-09-18 15:11:07
- * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-19 10:40:04
- * @FilePath: \sourceHTML\readme.md
--->
 # preload-screen  
 
 一个简单易用的**页面加载动画插件**，在 React 原生项目中使用。  
@@ -16,16 +10,6 @@
  - ⚡ 支持自动模式 / 手动模式
  - 🛡️ 最少显示时间，避免闪屏
  - 🔧 可作为独立插件封装发布
-
-<!-- ## 📦 安装
-
-```bash
-npm install preload-screen --save
-# 或者
-yarn add preload-screen
-# 或者
-pnpm add preload-screen
-``` -->
 
 ## 🔨 使用方法
 
