@@ -15,9 +15,13 @@
 
 ```bash
 npm install preload-screen --save
-# 或者
+```
+```或```
+```bash
 yarn add preload-screen
-# 或者
+```
+```或```
+```bash
 pnpm add preload-screen
 ```
 
