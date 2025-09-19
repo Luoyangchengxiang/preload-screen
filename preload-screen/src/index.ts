@@ -1,19 +1,10 @@
 /*
  * @Date: 2025-09-18 13:55:36
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-19 10:21:53
+ * @LastEditTime: 2025-09-19 11:07:24
  * @FilePath: \sourceHTML\preload-screen\src\index.ts
  */
 import "./style.css"
-/**
- * @description: 支持配置文件
- * @param {*} color：动画颜色
- * @param {*} text：显示文案
- * @param {*} minShow：最少显示时间（ms）
- * @param {*} fadeOut：淡出动画时间（ms）
- * @param {*} mode：auto / manual，控制是否监听 window.load 自动消失
- * @return {*}
- */
 import { config } from "./config.ts";
 import type { PreloadConfig } from "./config.ts";
 
@@ -36,6 +27,8 @@ class PreloadScreen {
   private color: string; // 加载环的颜色
   private debug: boolean; // 是否开启debug
   private autoBound = false; // 是否已绑定过mutation监听 避免重复绑定
+  private hideScheduled = false; // 防止重复调用 hide
+
   constructor(options?: Partial<PreloadConfig>) {
     const processedConfig = { ...config, ...options };
 
@@ -87,10 +80,24 @@ class PreloadScreen {
   private createDOM() {
     const wrapper = document.createElement('div');
     wrapper.id = 'chyk-preload-screen';
-    wrapper.innerHTML = `
-      <div class="chyk-preload-spinner" style="border-top-color:${this.color}"></div>
-      <div class="chyk-preload-text">${this.text}</div>
-    `;
+
+    // wrapper.innerHTML = `
+    //   <div class="chyk-preload-spinner" style="border-top-color:${this.color}"></div>
+    //   <div class="chyk-preload-text">${this.text}</div>
+    // `;
+    const spinner = document.createElement('div');
+    spinner.className = 'chyk-preload-spinner';
+    spinner.style.borderTopColor = this.color;
+
+    const textEl = document.createElement('div');
+    textEl.className = 'chyk-preload-text';
+    textEl.textContent = this.text;
+
+    wrapper.appendChild(spinner);
+    wrapper.appendChild(textEl);
+
+    // ----------------------------
+
     document.body.appendChild(wrapper);
     this.el = wrapper;
   }
@@ -98,57 +105,64 @@ class PreloadScreen {
 
   private bindAutoRemove() {
     if (this.removed || this.autoBound) return;
+    this.autoBound = true;
     let _that = this;
+
+    // 监听内容变化的函数
+    const observeContentChange = (element: HTMLElement, callback: (hasContent: boolean) => void) => {
+      // 初始判断内容是否为空
+      let isContentPresent: boolean = element.textContent?.trim() !== '';
+      callback(isContentPresent);
+
+      const observer: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
+        mutations.forEach(() => {
+          const newContentPresent: boolean = element.textContent?.trim() !== '';
+          if (newContentPresent !== isContentPresent) {
+            isContentPresent = newContentPresent;
+            callback(isContentPresent); // 传递布尔值给回调
+          }
+        });
+      });
+      // 配置观察选项：监听子节点变化和子树变化（包括文本节点）
+      const config: MutationObserverInit = {
+        childList: true, // 监听直接子节点变化
+        subtree: true,   // 监听所有后代节点变化
+        characterData: true,// 监听文本节点内容变化
+        characterDataOldValue: false
+      };
+      observer.observe(element, config);
+
+      return (): void => observer.disconnect();
+    }
+
+    const _bindObserve = (root: HTMLElement) => {
+      const stopObserving = observeContentChange(root, (hasContent: boolean) => {
+        if (hasContent) {
+          stopObserving();
+          _that.beforeHide('stopObserving')
+        }
+      });
+    }
     // 自动模式：资源加载完毕
     if (_that.mode === 'auto') {
       const _root: HTMLElement | null = document.getElementById(_that.elId);
-      // 监听内容变化的函数
-      function observeContentChange(element: HTMLElement, callback: (hasContent: boolean) => void) {
-        // 初始判断内容是否为空
-        let isContentPresent: boolean = element.textContent?.trim() !== '';
-        callback(isContentPresent);
-
-        const observer: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
-          mutations.forEach(() => {
-            const newContentPresent: boolean = element.textContent?.trim() !== '';
-            if (newContentPresent !== isContentPresent) {
-              isContentPresent = newContentPresent;
-              callback(isContentPresent); // 传递布尔值给回调
-            }
-          });
-        });
-        // 配置观察选项：监听子节点变化和子树变化（包括文本节点）
-        const config: MutationObserverInit = {
-          childList: true, // 监听直接子节点变化
-          subtree: true,   // 监听所有后代节点变化
-          characterData: true,// 监听文本节点内容变化
-          characterDataOldValue: false
-        };
-        observer.observe(element, config);
-
-        return (): void => observer.disconnect();
-      }
-
-      function _bindObserve(root: HTMLElement) {
-        const stopObserving = observeContentChange(root, (hasContent: boolean) => {
-          if (hasContent) {
-            stopObserving();
-            _that.beforeHide('stopObserving')
-          }
-        });
-      }
 
       if (_root) {
         // 启动监听，回调函数接收布尔值（true=有内容，false=空）
         _bindObserve(_root)
       } else {
         if (_that.debug) console.warn(`[PreloadScreen] 未找到指定元素 #${_that.elId}, 等待挂载...`);
+        let attempts = 0;
+        const maxAttempts = 100; // 最大尝试次数
         // 轮询等待元素挂载
         const interval = setInterval(() => {
           const el = document.getElementById(_that.elId);
           if (el) {
             clearInterval(interval);
             _bindObserve(el)
+          } else if (++attempts >= maxAttempts) {
+            clearInterval(interval);
+            if (_that.debug) console.warn(`[PreloadScreen] 未找到指定元素 #${_that.elId}`);
           }
         }, 50);
       }
@@ -156,14 +170,15 @@ class PreloadScreen {
     // 用户自定义触发
     window.addEventListener('app-ready', () => _that.beforeHide('app-ready'), { once: true });
 
-    window.preloadHide = () => _that.beforeHide('preloadHide()');
+    if (!window.preloadHide) { window.preloadHide = () => _that.beforeHide('preloadHide()') };
   }
 
   public beforeHide(reason?: string) {
     if (this.debug) console.log('[PreloadScreen] beforeHide:', reason);
-    if (this.removed) return;
+    if (this.removed || this.hideScheduled) return;
     const elapsed = Date.now() - this.createdAt;
     const wait = this.MIN_SHOW_MS - elapsed;
+    this.hideScheduled = true;
     if (wait > 0) { setTimeout(() => this.hide(), wait); }
     else {
       this.hide();

@@ -92,7 +92,7 @@ pnpm add preload-screen
 ## ⚙️ 配置项
    参数 | 类型 | 默认值 | 说明 |
   ------ | --- | --- | --- |
-  ```elId``` | ```string``` | - | 承载框架渲染内容的根节点元素的 id 值 ```mode``` 值为 ```auto``` 时必填 |
+  ```elId``` | ```string``` | - | 承载框架渲染内容的根节点元素的 id 值， ```mode``` 值为 ```auto``` 时必填 |
   ```mode``` | ```string``` | ```manual``` | 模式选择，可选值：```auto``` / ```manual``` |
   ```text``` | ```string``` | ```Loading...``` | Loading 文案 |
   ```color``` | ```string``` | ```#1890ff``` | 环形加载动画的边框颜色 |
