@@ -1,7 +1,9 @@
 
-import "./style.css"
+import "./css/style.css"
+import { Anime3DBoxSpin } from "./js/anime/anime3DBoxSpin";
+import { Flower } from "./js/anime/animeFlower";
 import { config } from "./config";
-import type { PreloadConfig, PreloadMode } from "./config";
+import type { PreloadConfig, PreloadMode, LogoConfig, AnimeStyle } from "./config";
 
 declare global {
   interface Window {
@@ -24,6 +26,9 @@ class PreloadScreen {
   private autoBound = false; // 是否已绑定过mutation监听 避免重复绑定
   private hideScheduled = false; // 防止重复调用 hide
 
+  private logoConfig: LogoConfig | string;
+  private animeStyle: AnimeStyle;
+
   constructor(options?: Partial<PreloadConfig>) {
     const processedConfig = { ...config, ...options };
 
@@ -35,14 +40,16 @@ class PreloadScreen {
     this.color = processedConfig.color ?? '#1890ff';
     this.debug = processedConfig.debug ?? false;
     this.createdAt = Date.now();
+    this.logoConfig = processedConfig.logoConfig ?? '';
+    this.animeStyle = processedConfig.animeStyle ?? 'spin';
 
     this.createDOM();
     this.bindAutoRemove();
 
-    if (this.debug) console.log(`[PreloadScreen] constructor options: ${JSON.stringify(processedConfig)}`, performance.now());
+    if (this.debug) { console.log(`[PreloadScreen] constructor options: ${JSON.stringify(processedConfig)}`, performance.now()); }
   }
   public static init(options?: PreloadConfig) {
-    if (options?.debug) console.log(`[PreloadScreen] init setupInstance options: ${JSON.stringify(options)}`, performance.now());
+    if (options?.debug) { console.log(`[PreloadScreen] init setupInstance options: ${JSON.stringify(options)}`, performance.now()); }
 
     if (!PreloadScreen.instance) {
       PreloadScreen.instance = new PreloadScreen(options);
@@ -52,9 +59,28 @@ class PreloadScreen {
     return PreloadScreen.instance;
   }
 
+  private handleElementVisible(visible: boolean, elementNode?: HTMLElement[]) {
+    if (this.debug) { console.log(`[PreloadScreen] handleElementVisible visible: ${visible}`, performance.now()); }
+    if (visible) {
+      if (elementNode) {
+        elementNode.forEach(node => {
+          if (this.debug) { console.log(`[PreloadScreen] show node: ${node}`, performance.now()); }
+          node && node.classList.add("visible");
+        });
+      }
+    } else {
+      if (elementNode) {
+        elementNode.forEach(node => {
+          if (this.debug) { console.log(`[PreloadScreen] hide node: ${node}`, performance.now()); }
+          node && node.classList.remove("visible");
+        });
+      }
+    }
+  }
+
   private setupConfig(options: Partial<PreloadConfig>) {
     const prevMode = this.mode;
-    if (options.debug) console.log(`[PreloadScreen] setupConfig prevMode: ${prevMode}`, performance.now());
+    if (options.debug) { console.log(`[PreloadScreen] setupConfig prevMode: ${prevMode}`, performance.now()); }
     this.elId = options.elId ?? this.elId;
     this.MIN_SHOW_MS = options.minShow ?? this.MIN_SHOW_MS;
     this.FADE_OUT_MS = options.fadeOut ?? this.FADE_OUT_MS;
@@ -64,17 +90,59 @@ class PreloadScreen {
     this.text = options.text ?? this.text;
     this.color = options.color ?? this.color;
     this.debug = options.debug ?? this.debug;
+    this.logoConfig = options.logoConfig ?? this.logoConfig;
+    this.animeStyle = options.animeStyle ?? this.animeStyle;
 
-    if (options.debug) console.log(`[PreloadScreen] setupConfig options: ${JSON.stringify(options)}`, performance.now());
+    if (options.debug) { console.log(`[PreloadScreen] setupConfig options: ${JSON.stringify(options)}`, performance.now()); }
+
     if (this.el) {
-      const spinner = this.el.querySelector<HTMLElement>('.chyk-preload-spinner');
+      let logoSrc: LogoConfig | string | undefined = void 0;
+      if (typeof this.logoConfig === 'string') {
+        logoSrc = this.logoConfig;
+      } else if (typeof this.logoConfig === 'object') {
+        logoSrc = this.logoConfig.src;
+      }
+      if (this.debug) { console.log(`[PreloadScreen] setupConfig logoSrc: ${logoSrc}`, performance.now()); }
+
+      const animeEl = this.el.querySelector<HTMLElement>('.chyk-preload-anime');
       const textEl = this.el.querySelector<HTMLElement>('.chyk-preload-text');
-      if (spinner) spinner.style.borderTopColor = this.color;
-      if (textEl) textEl.textContent = this.text;
+      const logoEl = this.el.querySelector<HTMLElement>('.chyk-preload-logo');
+
+      if (logoEl && animeEl && textEl) {
+        if (logoSrc) {
+          if (this.debug) { console.log(`[PreloadScreen] setup logo src: ${logoSrc}`, performance.now()); }
+          this.handleElementVisible(true, [logoEl]);
+          this.handleElementVisible(false, [animeEl, textEl]);
+          logoEl.style.backgroundImage = `url(${logoSrc})`;
+        } else if (this.animeStyle === '3dBox') {
+          if (this.debug) { console.log(`[PreloadScreen] setup logo src`, performance.now()); }
+          this.handleElementVisible(false, [logoEl]);
+          this.handleElementVisible(true, [animeEl, textEl]);
+          const anime3DBoxSpinDOM = new Anime3DBoxSpin().create();
+          animeEl.style.padding = '30px'
+          animeEl.appendChild(anime3DBoxSpinDOM);
+        } else if (this.animeStyle === 'petal') {
+          if (this.debug) { console.log(`[PreloadScreen] setup logo src`, performance.now()); }
+          this.handleElementVisible(false, [logoEl]);
+          this.handleElementVisible(true, [animeEl, textEl]);
+          const canvas = document.createElement('canvas');
+          animeEl.appendChild(canvas);
+          new Flower(canvas);
+        } else {
+          if (this.debug) { console.log(`[PreloadScreen] not set logo src`, performance.now()); }
+          this.handleElementVisible(false, [logoEl]);
+          this.handleElementVisible(true, [animeEl, textEl]);
+          animeEl.style.borderTopColor = this.color;
+          animeEl.classList.add(`chyk-anime-${this.animeStyle}`);
+          textEl.textContent = this.text;
+        }
+      } else {
+        if (this.debug) { console.error(`[PreloadScreen] Failed to obtain the loading element`, performance.now()); }
+      }
     }
 
     if (prevMode !== 'auto' && this.mode === 'auto') {
-      if (options.debug) console.log(`[PreloadScreen] setupConfig PreloadModeChange. So run bindAutoRemove.`, performance.now());
+      if (options.debug) { console.log(`[PreloadScreen] setupConfig PreloadModeChange. So run bindAutoRemove.`, performance.now()); }
       this.bindAutoRemove();
     }
   }
@@ -83,18 +151,22 @@ class PreloadScreen {
     const wrapper = document.createElement('div');
     wrapper.id = 'chyk-preload-screen';
 
-    const spinner = document.createElement('div');
-    spinner.className = 'chyk-preload-spinner';
-    spinner.style.borderTopColor = this.color;
+    const logoEl = document.createElement('div');
+    logoEl.className = 'chyk-view chyk-preload-logo';
+
+    const animeEl = document.createElement('div');
+    animeEl.className = 'chyk-view chyk-preload-anime';
+    // animeEl.style.borderTopColor = this.color;
+    // animeEl.classList.add(`chyk-anime-${this.animeStyle}`);
 
     const textEl = document.createElement('div');
-    textEl.className = 'chyk-preload-text';
+    textEl.className = 'chyk-view chyk-preload-text';
     textEl.textContent = this.text;
-
-    wrapper.appendChild(spinner);
+    this.handleElementVisible(false, [logoEl]);
+    this.handleElementVisible(true, [animeEl, textEl]);
+    wrapper.appendChild(logoEl);
+    wrapper.appendChild(animeEl);
     wrapper.appendChild(textEl);
-
-    // ----------------------------
 
     document.body.appendChild(wrapper);
     this.el = wrapper;
@@ -103,7 +175,7 @@ class PreloadScreen {
 
   private bindAutoRemove() {
     let _that = this;
-    if (_that.debug) console.log(`[PreloadScreen] bindAutoRemove mode`, _that.mode, _that.mode === 'auto', performance.now());
+    if (_that.debug) { console.log(`[PreloadScreen] bindAutoRemove mode`, _that.mode, _that.mode === 'auto', performance.now()); }
     if (_that.removed || _that.autoBound) return;
     // 监听内容变化的函数
     const observeContentChange = (element: HTMLElement, callback: (hasContent: boolean) => void) => {
@@ -145,13 +217,13 @@ class PreloadScreen {
 
     // 自动模式：资源加载完毕
     if (_that.mode === 'auto') {
-      if (_that.debug) console.log(`[PreloadScreen] bindAutoRemove root`, performance.now());
+      if (_that.debug) { console.log(`[PreloadScreen] bindAutoRemove root`, performance.now()); }
       const _root: HTMLElement | null = document.getElementById(_that.elId);
       if (_root) {
         // 启动监听，回调函数接收布尔值（true=有内容，false=空）
         _bindObserve(_root)
       } else {
-        if (_that.debug) console.warn(`[PreloadScreen] 未找到指定元素 #${_that.elId}, 等待挂载...`);
+        if (_that.debug) { console.warn(`[PreloadScreen] The specified element #${_that.elId} was not found. Wait for mounting...`); }
         let attempts = 0;
         const maxAttempts = 100; // 最大尝试次数
         // 轮询等待元素挂载
@@ -162,7 +234,7 @@ class PreloadScreen {
             _bindObserve(el)
           } else if (++attempts >= maxAttempts) {
             clearInterval(interval);
-            if (_that.debug) console.warn(`[PreloadScreen] 未找到指定元素 #${_that.elId}`);
+            if (_that.debug) { console.warn(`[PreloadScreen] 未找到指定元素 #${_that.elId}`); }
           }
         }, 50);
       }
@@ -174,7 +246,7 @@ class PreloadScreen {
   }
 
   public beforeHide(reason?: string) {
-    if (this.debug) console.log('[PreloadScreen] beforeHide:', reason);
+    if (this.debug) { console.log('[PreloadScreen] beforeHide:', reason); }
     if (this.removed || this.hideScheduled) return;
     const elapsed = Date.now() - this.createdAt;
     const wait = this.MIN_SHOW_MS - elapsed;

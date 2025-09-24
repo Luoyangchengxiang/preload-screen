@@ -11,7 +11,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build:ts": "tsc -p tsconfig.json",
-    "copy:assets": "cpy \"src/*.css\" dist --flat",
+    "copy:assets": "cpy \"src/**/*.css\" dist --parents",
     "build": "pnpm run clean && pnpm run build:ts && pnpm run copy:assets",
     "prepare": "pnpm run build"
   },

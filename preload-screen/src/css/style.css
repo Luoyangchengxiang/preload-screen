@@ -1,3 +1,5 @@
+@import url("./box-loading.css");
+
 /* src/style.css */
 #chyk-preload-screen {
   position: fixed;
@@ -18,7 +20,15 @@
   opacity: 0;
 }
 
-.chyk-preload-spinner {
+.chyk-preload-anime {
+  display: flex;
+}
+
+.chyk-view:not(.visible) {
+  display: none;
+}
+
+.chyk-anime-spin {
   width: 48px;
   height: 48px;
   border: 4px solid #ccc;
@@ -27,7 +37,27 @@
   animation: spin 1s linear infinite;
 }
 
+.chyk-anime-snow {
+  animation: snow 0.1s linear infinite;
+}
+
+.chyk-anime-petal {
+  animation: petal 0.1s linear infinite;
+}
+
 @keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes snow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes snow {
   to {
     transform: rotate(360deg);
   }
