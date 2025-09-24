@@ -102,6 +102,7 @@ pnpm add preload-screen
   ```color``` | ```string``` | ```#1890ff``` | 环形加载动画的边框颜色 |
   ```minShow``` | ```number``` | ```300``` | 最少显示时间 (ms)，避免闪屏 |
   ```fadeOut```| ```number``` | ```500``` | Loading 消失动画时长 (ms) |
+  ```animeStyle```| ```string``` | ```spin``` | 动画样式，可选值 ```spin``` / ```3dBox``` / ```petal``` |
   --------
 
 ## 🖐 手动 API
@@ -116,3 +117,9 @@ pnpm add preload-screen
 
 [MIT © 2025](https://github.com/Luoyangchengxiang/preload-screen?tab=MIT-1-ov-file#)
 
+## v1.0.3 - 2025-09-27 更新日志
+
+### ✨ Added 新增功能
+  添加 ```animeStyle``` 参数，可选值 ```spin``` / ```3dBox``` / ```petal```  
+  新增花瓣旋转动画组件 `Flower` ，动画配置选择 ```petal```  
+  新增3D立方体旋转动画组件 `3dBoxSpin` ,动画配置选择 ```3dBox```
