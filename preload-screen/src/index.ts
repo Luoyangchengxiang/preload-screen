@@ -35,7 +35,7 @@ class PreloadScreen {
     this.elId = processedConfig.elId ?? 'root';
     this.MIN_SHOW_MS = processedConfig.minShow ?? 300;
     this.FADE_OUT_MS = processedConfig.fadeOut ?? 500;
-    this.mode = (processedConfig.mode as 'auto' | 'manual') ?? 'manual';
+    this.mode = (processedConfig.mode as PreloadMode) ?? 'manual';
     this.text = processedConfig.text ?? 'Loading...';
     this.color = processedConfig.color ?? '#1890ff';
     this.debug = processedConfig.debug ?? false;
@@ -85,7 +85,7 @@ class PreloadScreen {
     this.MIN_SHOW_MS = options.minShow ?? this.MIN_SHOW_MS;
     this.FADE_OUT_MS = options.fadeOut ?? this.FADE_OUT_MS;
 
-    this.mode = (options.mode as 'auto' | 'manual') ?? this.mode;
+    this.mode = (options.mode as PreloadMode) ?? this.mode;
 
     this.text = options.text ?? this.text;
     this.color = options.color ?? this.color;
@@ -96,24 +96,32 @@ class PreloadScreen {
     if (options.debug) { console.log(`[PreloadScreen] setupConfig options: ${JSON.stringify(options)}`, performance.now()); }
 
     if (this.el) {
-      let logoSrc: LogoConfig | string | undefined = void 0;
-      if (typeof this.logoConfig === 'string') {
-        logoSrc = this.logoConfig;
-      } else if (typeof this.logoConfig === 'object') {
-        logoSrc = this.logoConfig.src;
-      }
-      if (this.debug) { console.log(`[PreloadScreen] setupConfig logoSrc: ${logoSrc}`, performance.now()); }
+
 
       const animeEl = this.el.querySelector<HTMLElement>('.chyk-preload-anime');
       const textEl = this.el.querySelector<HTMLElement>('.chyk-preload-text');
       const logoEl = this.el.querySelector<HTMLElement>('.chyk-preload-logo');
 
       if (logoEl && animeEl && textEl) {
+        let logoSrc: string | undefined = void 0;
+
+        if (typeof this.logoConfig === 'object' && this.logoConfig.src) {
+          logoSrc = this.logoConfig.src;
+        } else if (typeof this.logoConfig === 'string') {
+          logoSrc = this.logoConfig;
+        }
+
+        if (this.debug) { console.log(`[PreloadScreen] setupConfig logoSrc: ${logoSrc}`, performance.now()); }
+
         if (logoSrc) {
           if (this.debug) { console.log(`[PreloadScreen] setup logo src: ${logoSrc}`, performance.now()); }
           this.handleElementVisible(true, [logoEl]);
           this.handleElementVisible(false, [animeEl, textEl]);
-          logoEl.style.backgroundImage = `url(${logoSrc})`;
+          try {
+            logoEl.style.backgroundImage = `url(${CSS.escape(logoSrc)})`;
+          } catch (error) {
+            logoEl.style.backgroundImage = `url(${logoSrc})`;
+          }
         } else {
           this.handleElementVisible(false, [logoEl]);
           this.handleElementVisible(true, [animeEl, textEl]);
@@ -149,7 +157,7 @@ class PreloadScreen {
       }
     }
 
-    if (prevMode !== 'auto' && this.mode === 'auto') {
+    if (prevMode !== this.mode && this.mode === 'auto') {
       if (options.debug) { console.log(`[PreloadScreen] setupConfig PreloadModeChange. So run bindAutoRemove.`, performance.now()); }
       this.bindAutoRemove();
     }
