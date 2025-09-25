@@ -114,28 +114,36 @@ class PreloadScreen {
           this.handleElementVisible(true, [logoEl]);
           this.handleElementVisible(false, [animeEl, textEl]);
           logoEl.style.backgroundImage = `url(${logoSrc})`;
-        } else if (this.animeStyle === '3dBox') {
-          if (this.debug) { console.log(`[PreloadScreen] setup logo src`, performance.now()); }
-          this.handleElementVisible(false, [logoEl]);
-          this.handleElementVisible(true, [animeEl, textEl]);
-          const anime3DBoxSpinDOM = new Anime3DBoxSpin().create();
-          animeEl.style.padding = '30px'
-          animeEl.appendChild(anime3DBoxSpinDOM);
-        } else if (this.animeStyle === 'petal') {
-          if (this.debug) { console.log(`[PreloadScreen] setup logo src`, performance.now()); }
-          this.handleElementVisible(false, [logoEl]);
-          this.handleElementVisible(true, [animeEl, textEl]);
-          const canvas = document.createElement('canvas');
-          animeEl.appendChild(canvas);
-          new Flower(canvas);
         } else {
-          if (this.debug) { console.log(`[PreloadScreen] not set logo src`, performance.now()); }
           this.handleElementVisible(false, [logoEl]);
           this.handleElementVisible(true, [animeEl, textEl]);
-          animeEl.style.borderTopColor = this.color;
-          animeEl.classList.add(`chyk-anime-${this.animeStyle}`);
-          textEl.textContent = this.text;
+
+          if (this.animeStyle === '3dBox') {
+            if (this.debug) { console.log(`[PreloadScreen] setup animeStyle: ${this.animeStyle}`, performance.now()); }
+            try {
+              const anime3DBoxSpinDOM = new Anime3DBoxSpin().create();
+              animeEl.classList.add("chyk-p-30")
+              animeEl.appendChild(anime3DBoxSpinDOM);
+            } catch (e) {
+              if (this.debug) { console.error('[PreloadScreen] Failed to create 3D box animation', e); }
+            }
+          } else if (this.animeStyle === 'petal') {
+            if (this.debug) { console.log(`[PreloadScreen] setup animeStyle: ${this.animeStyle}`, performance.now()); }
+            try {
+              const canvas = document.createElement('canvas');
+              animeEl.appendChild(canvas);
+              new Flower(canvas);
+            } catch (e) {
+              if (this.debug) { console.error('[PreloadScreen] Failed to create petal animation', e); }
+            }
+          } else {
+            if (this.debug) { console.log(`[PreloadScreen] not set logo src`, performance.now()); }
+            animeEl.style.borderTopColor = this.color;
+            animeEl.classList.add(`chyk-anime-${this.animeStyle}`);
+            textEl.textContent = this.text;
+          }
         }
+
       } else {
         if (this.debug) { console.error(`[PreloadScreen] Failed to obtain the loading element`, performance.now()); }
       }
@@ -156,8 +164,6 @@ class PreloadScreen {
 
     const animeEl = document.createElement('div');
     animeEl.className = 'chyk-view chyk-preload-anime';
-    // animeEl.style.borderTopColor = this.color;
-    // animeEl.classList.add(`chyk-anime-${this.animeStyle}`);
 
     const textEl = document.createElement('div');
     textEl.className = 'chyk-view chyk-preload-text';

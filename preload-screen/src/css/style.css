@@ -1,5 +1,9 @@
 @import url("./box-loading.css");
 
+.chyk-p-30 {
+  padding: 30px;
+}
+
 /* src/style.css */
 #chyk-preload-screen {
   position: fixed;

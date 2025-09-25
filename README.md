@@ -121,5 +121,6 @@ pnpm add preload-screen
 
 ### ✨ Added 新增功能
   添加 ```animeStyle``` 参数，可选值 ```spin``` / ```3dBox``` / ```petal```  
+  默认使用 ```spin``` 旋转动画  
   新增花瓣旋转动画组件 `Flower` ，动画配置选择 ```petal```  
   新增3D立方体旋转动画组件 `3dBoxSpin` ,动画配置选择 ```3dBox```
