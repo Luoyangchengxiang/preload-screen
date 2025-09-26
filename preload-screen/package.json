@@ -1,6 +1,7 @@
 {
   "name": "preload-screen",
-  "version": "1.0.1",
+  "version": "1.1.0",
+  "type": "module",
   "description": "页面挂载前显示loading动画",
   "main": "dist/preload-screen.umd.js",
   "module": "dist/preload-screen.es.js",
@@ -14,7 +15,7 @@
     "test": "vitest",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
-    "release": "node build/scripts/release.js"
+    "release": "node builds/scripts/release.js"
   },
   "repository": {
     "type": "git",
