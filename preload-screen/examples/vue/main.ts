@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-09-25 15:29:18
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-26 09:54:00
+ * @LastEditTime: 2025-09-26 11:11:33
  * @FilePath: \sourceHTML\preload-screen\examples\vue\main.ts
  */
 import { createApp } from "vue";
@@ -28,7 +28,8 @@ function awaitTimeout(ms: number) {
 (async function () {
   setTimeout(() => {
     // 手动触发beforeHide事件关闭Loading
-    window.dispatchEvent(new CustomEvent('app-ready'))
+    // window.dispatchEvent(new CustomEvent('app-ready'))
+    // window.preloadHide();
     loader.hide();
   }, 5000);
   await awaitTimeout(100000);
