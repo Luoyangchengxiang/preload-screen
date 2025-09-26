@@ -3,7 +3,7 @@ import "./css/style.css"
 import { Anime3DBoxSpin } from "./js/anime/anime3DBoxSpin";
 import { Flower } from "./js/anime/animeFlower";
 import { config } from "./config";
-import type { PreloadConfig, PreloadMode, LogoConfig, AnimeStyle } from "./config";
+import type { PreloadConfig, PreloadMode, LogoConfig, AnimeStyle } from "./types";
 
 declare global {
   interface Window {
@@ -77,90 +77,197 @@ class PreloadScreen {
       }
     }
   }
-
-  private setupConfig(options: Partial<PreloadConfig>) {
-    const prevMode = this.mode;
-    if (options.debug) { console.log(`[PreloadScreen] setupConfig prevMode: ${prevMode}`, performance.now()); }
+  /**
+   * 更新配置参数
+   * @description: 接收用户传递的配置参数并更新默认配置
+   * @param {Partial<PreloadConfig>} options
+   * @returns {void}
+   * @private
+   */
+  private updateBasicConfig(options: Partial<PreloadConfig>): void {
+    if (options.debug) { console.log(`[PreloadScreen] setupConfig prevMode: ${this.mode}`, performance.now()); }
     this.elId = options.elId ?? this.elId;
     this.MIN_SHOW_MS = options.minShow ?? this.MIN_SHOW_MS;
     this.FADE_OUT_MS = options.fadeOut ?? this.FADE_OUT_MS;
-
     this.mode = (options.mode as PreloadMode) ?? this.mode;
-
     this.text = options.text ?? this.text;
     this.color = options.color ?? this.color;
     this.debug = options.debug ?? this.debug;
     this.logoConfig = options.logoConfig ?? this.logoConfig;
     this.animeStyle = options.animeStyle ?? this.animeStyle;
-
     if (options.debug) { console.log(`[PreloadScreen] setupConfig options: ${JSON.stringify(options)}`, performance.now()); }
+  }
 
-    if (this.el) {
-
-
-      const animeEl = this.el.querySelector<HTMLElement>('.chyk-preload-anime');
-      const textEl = this.el.querySelector<HTMLElement>('.chyk-preload-text');
-      const logoEl = this.el.querySelector<HTMLElement>('.chyk-preload-logo');
-
-      if (logoEl && animeEl && textEl) {
-        let logoSrc: string | undefined = void 0;
-
-        if (typeof this.logoConfig === 'object' && this.logoConfig.src) {
-          logoSrc = this.logoConfig.src;
-        } else if (typeof this.logoConfig === 'string') {
-          logoSrc = this.logoConfig;
-        }
-
-        if (this.debug) { console.log(`[PreloadScreen] setupConfig logoSrc: ${logoSrc}`, performance.now()); }
-
-        if (logoSrc) {
-          if (this.debug) { console.log(`[PreloadScreen] setup logo src: ${logoSrc}`, performance.now()); }
-          this.handleElementVisible(true, [logoEl]);
-          this.handleElementVisible(false, [animeEl, textEl]);
-          try {
-            logoEl.style.backgroundImage = `url(${CSS.escape(logoSrc)})`;
-          } catch (error) {
-            logoEl.style.backgroundImage = `url(${logoSrc})`;
-          }
-        } else {
-          this.handleElementVisible(false, [logoEl]);
-          this.handleElementVisible(true, [animeEl, textEl]);
-
-          if (this.animeStyle === '3dBox') {
-            if (this.debug) { console.log(`[PreloadScreen] setup animeStyle: ${this.animeStyle}`, performance.now()); }
-            try {
-              const anime3DBoxSpinDOM = new Anime3DBoxSpin().create();
-              animeEl.classList.add("chyk-p-30")
-              animeEl.appendChild(anime3DBoxSpinDOM);
-            } catch (e) {
-              if (this.debug) { console.error('[PreloadScreen] Failed to create 3D box animation', e); }
-            }
-          } else if (this.animeStyle === 'petal') {
-            if (this.debug) { console.log(`[PreloadScreen] setup animeStyle: ${this.animeStyle}`, performance.now()); }
-            try {
-              const canvas = document.createElement('canvas');
-              animeEl.appendChild(canvas);
-              new Flower(canvas);
-            } catch (e) {
-              if (this.debug) { console.error('[PreloadScreen] Failed to create petal animation', e); }
-            }
-          } else {
-            if (this.debug) { console.log(`[PreloadScreen] not set logo src`, performance.now()); }
-            animeEl.style.borderTopColor = this.color;
-            animeEl.classList.add(`chyk-anime-${this.animeStyle}`);
-            textEl.textContent = this.text;
-          }
-        }
-
-      } else {
-        if (this.debug) { console.error(`[PreloadScreen] Failed to obtain the loading element`, performance.now()); }
-      }
+  /**
+   * 分配DOM元素
+   * @description: 根据传入的内容，展示不同的DOM元素
+   * @return {void}
+   * @private
+   */
+  private updateDOMElements(): void {
+    if (!this.el) return;
+    const elements = this.queryPreloadElements();
+    if (!elements) {
+      if (this.debug) { console.error(`[PreloadScreen] Failed to obtain the loading element`, performance.now()); }
+      return;
     }
 
+    const { animeEl, textEl, logoEl } = elements;
+    const logoSrc = this.getLogoSrc();
+
+    if (logoSrc) {
+      this.setupLogoDisplay(logoEl, animeEl, textEl, logoSrc);
+    } else {
+      if (this.debug) { console.log(`[PreloadScreen] not set logo src`, performance.now()); }
+      this.setupAnimationDisplay(logoEl, animeEl, textEl);
+    }
+  }
+
+  /**
+   * 获取页面DOM元素
+   * @description: 获取DOM容器并返回，包含三个元素的对象；任一元素缺失则返回 null
+   * @return {{ animeEl: HTMLElement, textEl: HTMLElement, logoEl: HTMLElement } | null}
+   * @private
+   */
+  private queryPreloadElements(): { animeEl: HTMLElement; textEl: HTMLElement; logoEl: HTMLElement; } | null {
+    const animeEl = this.el?.querySelector<HTMLElement>('.chyk-preload-anime');
+    const textEl = this.el?.querySelector<HTMLElement>('.chyk-preload-text');
+    const logoEl = this.el?.querySelector<HTMLElement>('.chyk-preload-logo');
+
+    if (logoEl && animeEl && textEl) {
+      return { animeEl, textEl, logoEl };
+    }
+    return null;
+  }
+
+  /**
+   * 获取logo值
+   * @description: 通过logoConfig获取logo值
+   * @return {string|undefined}
+   * @private
+   */
+  private getLogoSrc(): string | undefined {
+    if (typeof this.logoConfig === 'object' && this.logoConfig.src) {
+      return this.logoConfig.src;
+    } else if (typeof this.logoConfig === 'string') {
+      return this.logoConfig;
+    }
+    return undefined;
+  }
+
+  /**
+   * 配置logo样式的显示与隐藏
+   * @description: 当传入logoConfig时，logoEl显示logoSrc，animeEl隐藏，textEl隐藏
+   * @private
+   * @todo: 待完善
+   * @param {HTMLElement} logoEl
+   * @param {HTMLElement} animeEl
+   * @param {HTMLElement} textEl
+   * @param {string} logoSrc
+   * @return {void}
+   */
+  private setupLogoDisplay(logoEl: HTMLElement, animeEl: HTMLElement, textEl: HTMLElement, logoSrc: string): void {
+    if (this.debug) { console.log(`[PreloadScreen] setup logo src: ${logoSrc}`, performance.now()); }
+
+    this.handleElementVisible(true, [logoEl]);
+    this.handleElementVisible(false, [animeEl, textEl]);
+
+    try {
+      logoEl.style.backgroundImage = `url(${CSS.escape(logoSrc)})`;
+    } catch (error) {
+      logoEl.style.backgroundImage = `url(${logoSrc})`;
+    }
+  }
+
+  /**
+   * 配置加载动画
+   * @description: 根据传入的配置参数，创建加载动画元素
+   * @private
+   * @param {HTMLElement} logoEl
+   * @param {HTMLElement} animeEl
+   * @param {HTMLElement} textEl
+   * @return {void}
+   */
+  private setupAnimationDisplay(logoEl: HTMLElement, animeEl: HTMLElement, textEl: HTMLElement): void {
+    this.handleElementVisible(false, [logoEl]);
+    this.handleElementVisible(true, [animeEl, textEl]);
+    if (this.debug) { console.log(`[PreloadScreen] setup animeStyle: ${this.animeStyle}`, performance.now()); }
+    switch (this.animeStyle) {
+      case '3dBox':
+        this.setup3DBoxAnimation(animeEl);
+        break;
+      case 'petal':
+        this.setupPetalAnimation(animeEl);
+        break;
+      default:
+        this.setupDefaultAnimation(animeEl, textEl);
+        break;
+    }
+  }
+
+  /**
+   * 3DBox动画
+   * @description: 创建一个3D盒子旋转动画，并添加到动画容器中
+   * @private
+   * @param {HTMLElement} animeEl
+   * @return {void}
+   * @see {@link https://uiverse.io/bociKond/wise-bat-13}
+   */
+  private setup3DBoxAnimation(animeEl: HTMLElement): void {
+    try {
+      const anime3DBoxSpinDOM = new Anime3DBoxSpin().create();
+      animeEl.classList.add("chyk-p-30")
+      animeEl.appendChild(anime3DBoxSpinDOM);
+    } catch (e) {
+      if (this.debug) { console.error('[PreloadScreen] Failed to create 3D box animation', e); }
+    }
+  }
+
+  /**
+   * 花瓣动画
+   * @description: 一个不怎么好看的canvas动画
+   * @param {HTMLElement} animeEl
+   * @return {void}
+   */
+  private setupPetalAnimation(animeEl: HTMLElement): void {
+    try {
+      const canvas = document.createElement('canvas');
+      animeEl.appendChild(canvas);
+      new Flower(canvas);
+    } catch (e) {
+      if (this.debug) { console.error('[PreloadScreen] Failed to create petal animation', e); }
+    }
+  }
+
+  /**
+   * 默认旋转动画
+   * @param {HTMLElement} animeEl
+   * @param {HTMLElement} textEl
+   * @return {void}
+   */
+  private setupDefaultAnimation(animeEl: HTMLElement, textEl: HTMLElement): void {
+    animeEl.style.borderTopColor = this.color;
+    animeEl.classList.add(`chyk-anime-${this.animeStyle}`);
+    textEl.textContent = this.text;
+  }
+
+  /**
+   * @description: 处理模式切换后的逻辑
+   * @param {PreloadMode} prevMode
+   * @param {Partial} options
+   * @return {void}
+   */
+  private handleModeChange(prevMode: PreloadMode, options: Partial<PreloadConfig>): void {
     if (prevMode !== this.mode && this.mode === 'auto') {
       if (options.debug) { console.log(`[PreloadScreen] setupConfig PreloadModeChange. So run bindAutoRemove.`, performance.now()); }
       this.bindAutoRemove();
     }
+  }
+  private setupConfig(options: Partial<PreloadConfig>) {
+    const prevMode = this.mode;
+    this.updateBasicConfig(options);
+    this.updateDOMElements();
+    this.handleModeChange(prevMode, options);
   }
 
   private createDOM() {

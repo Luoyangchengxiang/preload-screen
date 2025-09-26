@@ -42,7 +42,7 @@
 }
 
 .chyk-anime-snow {
-  animation: snow 0.1s linear infinite;
+  animation: snowflake 0.1s linear infinite;
 }
 
 .chyk-anime-petal {
@@ -55,13 +55,13 @@
   }
 }
 
-@keyframes snow {
+@keyframes snowflake {
   to {
     transform: rotate(360deg);
   }
 }
 
-@keyframes snow {
+@keyframes petal {
   to {
     transform: rotate(360deg);
   }
