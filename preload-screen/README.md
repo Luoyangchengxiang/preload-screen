@@ -74,21 +74,16 @@ pnpm add preload-screen
   
     import { initPreloadScreen } from "preload-screen"; 
     const loader = initPreloadScreen({
+      mode: "manual",
       text: "Loading...",
       color: "#1890ff",
     });
 
-    function awaitTimeout(ms: number) {
-      return new Promise((resolve) => setTimeout(resolve, ms))
-    }
-
     (async function () {
-      // 5秒后关闭Loading，但页面还会因为awaitTimeout函数的耗时而阻塞显示白屏
       setTimeout(() => {
         // 手动触发 hide 事件关闭Loading,
         loader.hide();
       }, 5000);
-      await awaitTimeout(100000);
       createRoot(document.getElementById('root')!).render(
         <StrictMode>
           <App />
