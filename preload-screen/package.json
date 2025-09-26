@@ -2,18 +2,18 @@
   "name": "preload-screen",
   "version": "1.0.1",
   "description": "页面挂载前显示loading动画",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/preload-screen.umd.js",
+  "module": "dist/preload-screen.es.js",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "clean": "rimraf dist",
-    "build:ts": "tsc -p tsconfig.json",
-    "copy:assets": "cpy \"src/**/*.css\" dist --parents",
-    "build": "pnpm run clean && pnpm run build:ts && pnpm run copy:assets",
-    "prepare": "pnpm run build"
+    "dev": "vite",
+    "build": "vite build",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage"
   },
   "repository": {
     "type": "git",
@@ -35,11 +35,14 @@
   },
   "license": "MIT",
   "homepage": "https://github.com/Luoyangchengxiang/preload-screen#readme",
-  "packageManager": "pnpm@10.15.0",
+  "packageManager": "pnpm@10.15.1",
   "devDependencies": {
     "@types/node": "^24.5.2",
-    "cpy-cli": "^6.0.0",
-    "rimraf": "^6.0.1",
-    "typescript": "^5.9.2"
+    "jsdom": "^27.0.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.7",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-libcss": "^1.1.2",
+    "vitest": "^3.2.4"
   }
 }

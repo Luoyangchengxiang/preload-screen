@@ -2,22 +2,37 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": [
+      "ES2020",
+      "DOM"
+    ],
     "declaration": true,
-    "declarationDir": "dist",
+    "declarationDir": "dist/types",
     "outDir": "dist",
-    "rootDir": "src",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true
+    "resolveJsonModule": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@chyk/preload-screen": [
+        "../dist/preload-screen.es.js"
+      ],
+      "@chyk/preload-screen/*": [
+        "../dist/types/*"
+      ]
+    }
   },
   "include": [
     "src"
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "__tests__"
   ]
 }

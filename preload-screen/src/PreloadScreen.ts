@@ -1,0 +1,105 @@
+import "./css/style.css"
+import type { PreloadConfig } from "./types";
+import { ConfigManager } from "./managers/ConfigManager";
+import { DOMManager } from "./managers/DOMManager";
+import { AnimationManager } from "./managers/AnimationManager";
+import { LifecycleManager } from "./managers/LifecycleManager";
+declare global {
+  interface Window {
+    preloadHide?: () => void;
+  }
+}
+export class PreloadScreen {
+  private static instance: PreloadScreen;
+
+  private config: ConfigManager;
+  private dom: DOMManager;
+  private animation: AnimationManager;
+  private lifecycle: LifecycleManager;
+
+  private constructor(options?: Partial<PreloadConfig>) {
+    // 初始化配置
+    this.config = new ConfigManager(options);
+
+    // 初始化 DOM
+    this.dom = new DOMManager(this.config);
+
+    // 初始化动画管理器
+    this.animation = new AnimationManager(
+      this.config.debug,
+      this.config.color,
+      this.config.text
+    );
+
+    // 根据配置更新 DOM 元素
+    this.updateDOM();
+
+    // 生命周期控制（auto/manual 模式、hide 调度）
+    this.lifecycle = new LifecycleManager(this.config, this.dom, this.animation);
+
+    if (this.config.debug) {
+      console.log(
+        `[PreloadScreen] constructed with config:`,
+        this.config,
+        performance.now()
+      );
+    }
+  }
+
+  /** 单例入口 */
+  static init(options?: Partial<PreloadConfig>) {
+    if (!PreloadScreen.instance) {
+      PreloadScreen.instance = new PreloadScreen(options);
+    } else if (options) {
+      PreloadScreen.instance.updateConfig(options);
+    }
+    return PreloadScreen.instance;
+  }
+
+  /** 更新配置 */
+  private updateConfig(options: Partial<PreloadConfig>) {
+    const prevMode = this.config.mode;
+
+    this.config.update(options);
+    this.updateDOM();
+
+    // 如果模式切换到 auto，需要重新绑定
+    if (prevMode !== this.config.mode && this.config.mode === "auto") {
+      this.lifecycle = new LifecycleManager(this.config, this.dom, this.animation);
+    }
+
+    if (this.config.debug) {
+      console.log(
+        `[PreloadScreen] config updated:`,
+        options,
+        performance.now()
+      );
+    }
+  }
+
+  /** 更新 DOM （动画 / logo 显示） */
+  private updateDOM() {
+    const elements = this.dom.queryElements();
+    if (!elements) {
+      if (this.config.debug) {
+        console.error("[PreloadScreen] preload elements not found", performance.now());
+      }
+      return;
+    }
+
+    const { animeEl, textEl, logoEl } = elements;
+    const logoSrc = this.dom.getLogoSrc();
+
+    if (logoSrc) {
+      this.dom.showLogo(logoEl, animeEl, textEl, logoSrc);
+    } else {
+      this.dom.showAnimation(logoEl, animeEl, textEl);
+      this.animation.render(animeEl, textEl, this.config.animeStyle);
+    }
+  }
+
+  /** 手动隐藏 */
+  public hide(reason?: string) {
+    this.lifecycle.beforeHide(reason ?? "manual-hide");
+  }
+}

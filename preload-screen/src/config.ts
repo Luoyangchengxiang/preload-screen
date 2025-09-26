@@ -4,7 +4,7 @@
  * @LastEditTime: 2025-09-25 16:34:52
  * @FilePath: \sourceHTML\preload-screen\src\config.ts
  */
-import type { PreloadConfig } from './types-1';
+import type { PreloadConfig } from './types';
 
 /**
  * @description: 支持配置文件

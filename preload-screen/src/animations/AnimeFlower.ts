@@ -1,25 +1,19 @@
-// flower.ts - 假设页面有 <canvas id="stage"></canvas>
-type Config = {
-  petalCount: number;
-  innerRadius: number;
-  petalLength: number;
-  petalWidth: number;
-  rotationSpeed: number;
-  swaySpeed: number;
-  swayAngle: number;
-  petalColor: string;
-  petalSecondary: string;
-  centerColor: string;
-  blendMode: GlobalCompositeOperation;
-};
+/*
+ * @Date: 2025-09-25 11:18:58
+ * @LastEditors: Do not edit
+ * @LastEditTime: 2025-09-25 11:32:00
+ * @FilePath: \sourceHTML\preload-screen\src\animation\AnimeFlower.ts
+ */
+
+import type { FlowerConfig } from '../types';
 
 export class Flower {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
-  private config: Config;
+  private config: FlowerConfig;
   private startTime = performance.now();
 
-  constructor(canvas: HTMLCanvasElement, config?: Partial<Config>) {
+  constructor(canvas: HTMLCanvasElement, config?: Partial<FlowerConfig>) {
     this.canvas = canvas;
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('无法获取 2D context');
@@ -36,7 +30,7 @@ export class Flower {
       petalSecondary: '#FFD1E0',
       centerColor: '#FFD166',
       blendMode: 'lighter',
-    } as Config, config || {});
+    } as FlowerConfig, config || {});
 
     window.addEventListener('resize', () => this.fitToWindow());
     this.fitToWindow();
