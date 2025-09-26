@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-09-25 15:29:18
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-25 18:06:27
+ * @LastEditTime: 2025-09-26 09:54:00
  * @FilePath: \sourceHTML\preload-screen\examples\vue\main.ts
  */
 import { createApp } from "vue";
@@ -10,7 +10,7 @@ import App from "./App.vue";
 import { initPreloadScreen } from "@chyk/preload-screen";
 // import "../../src/index";
 // import { initPreloadScreen } from "../../src/index";
-initPreloadScreen({
+const loader = initPreloadScreen({
   mode: "auto",
   minShow: 300,
   fadeOut: 500,
@@ -26,9 +26,12 @@ function awaitTimeout(ms: number) {
 }
 
 (async function () {
+  setTimeout(() => {
+    // 手动触发beforeHide事件关闭Loading
+    window.dispatchEvent(new CustomEvent('app-ready'))
+    loader.hide();
+  }, 5000);
   await awaitTimeout(100000);
   const app = createApp(App);
   app.mount("#app");
-  // 手动触发beforeHide事件关闭Loading
-  // loader.beforeHide();
 })()

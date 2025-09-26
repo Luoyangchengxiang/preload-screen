@@ -12,6 +12,7 @@
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -20,10 +21,10 @@
     "baseUrl": ".",
     "paths": {
       "@chyk/preload-screen": [
-        "../dist/preload-screen.es.js"
+        "./dist/types/index.d.ts"
       ],
       "@chyk/preload-screen/*": [
-        "../dist/types/*"
+        "./dist/types/*"
       ]
     }
   },

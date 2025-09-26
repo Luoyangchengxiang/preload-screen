@@ -1,12 +1,12 @@
 /*
  * @Date: 2025-09-25 15:29:18
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-25 17:57:51
+ * @LastEditTime: 2025-09-26 10:26:38
  * @FilePath: \sourceHTML\preload-screen\examples\vue\vite.config.ts
  */
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import path from "node:path";
+import path from "path";
 
 export default defineConfig({
   plugins: [vue()],
