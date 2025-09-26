@@ -13,7 +13,8 @@
     "build": "vite build",
     "test": "vitest",
     "test:watch": "vitest watch",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "release": "node build/scripts/release.js"
   },
   "repository": {
     "type": "git",
