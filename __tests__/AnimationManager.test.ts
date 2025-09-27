@@ -2,6 +2,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { AnimationManager } from '../src/managers/AnimationManager';
 
+
 // mock 动画类
 vi.mock('../src/animations', () => ({
   Anime3DBoxSpin: vi.fn().mockImplementation(() => ({
@@ -11,14 +12,23 @@ vi.mock('../src/animations', () => ({
       return div
     }),
   })),
-  AnimeFlower: vi.fn(),
+  AnimeFlower: vi.fn().mockImplementation(() => ({
+    create: vi.fn(() => {
+      const canvas = document.createElement('canvas')
+      canvas.className = 'chyk-anime-flower'
+      return canvas
+    }),
+  })),
 }))
+
+
 
 describe('AnimationManager', () => {
   let animeEl: HTMLElement;
   let textEl: HTMLElement;
 
   beforeEach(() => {
+    vi.resetModules();
     animeEl = document.createElement('div');
     textEl = document.createElement('div');
   });
@@ -50,5 +60,35 @@ describe('AnimationManager', () => {
     mgr.render(animeEl, textEl, 'petal');
     expect(animeEl.querySelector('canvas')).toBeTruthy();
   })
+
+  it('3dBox 异常且 debug=true 时才打印错误', async () => {
+    // vi.resetModules();
+    // 1. 强制模拟抛出错误
+    const mockError = new Error('mock-3d-error');
+    const { Anime3DBoxSpin } = vi.hoisted(() => ({
+      Anime3DBoxSpin: vi.fn(() => ({
+        create: vi.fn(() => { throw mockError; }),
+      })),
+    }));
+
+    vi.doMock('../src/animations', () => ({
+      Anime3DBoxSpin,
+    }));
+
+    const { AnimationManager } = await import('../src/managers/AnimationManager');
+
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+
+    const mgr = new AnimationManager(true, '', '');
+    mgr.render(animeEl, textEl, '3dBox');
+
+    expect(consoleSpy).toHaveBeenCalledWith('[PreloadScreen] Failed to create 3D box animation', expect.any(Error));
+
+    consoleSpy.mockRestore();
+  });
+
+
+
+
 
 });
