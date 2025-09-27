@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-09-25 15:29:18
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-26 10:26:38
- * @FilePath: \sourceHTML\preload-screen\examples\vue\vite.config.ts
+ * @LastEditTime: 2025-09-26 16:23:37
+ * @FilePath: \sourceHTML\examples\vue\vite.config.ts
  */
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";

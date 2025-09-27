@@ -7,7 +7,6 @@
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import libCss from "vite-plugin-libcss";
-import path from "node:path";
 
 export default defineConfig({
   build: {

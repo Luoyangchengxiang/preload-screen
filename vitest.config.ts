@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-09-25 14:07:04
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-25 14:12:28
- * @FilePath: \sourceHTML\preload-screen\vitest.config.ts
+ * @LastEditTime: 2025-09-26 16:50:45
+ * @FilePath: \preload-screen\vitest.config.ts
  */
 import { defineConfig } from "vitest/config";
 

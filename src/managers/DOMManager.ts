@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-09-25 13:50:25
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-26 11:21:03
- * @FilePath: \sourceHTML\preload-screen\src\managers\DOMManager.ts
+ * @LastEditTime: 2025-09-26 17:19:42
+ * @FilePath: \preload-screen\src\managers\DOMManager.ts
  * @Description: 1.创建和维护 preload DOM 结构
  * 2.提供查询 DOM 元素的方法
  * 3.控制元素的显示与隐藏
