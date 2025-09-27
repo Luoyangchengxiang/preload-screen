@@ -1,25 +1,26 @@
 // __tests__/AnimationManager.test.ts
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import type { Mock } from 'vitest';
 import { AnimationManager } from '../src/managers/AnimationManager';
 
 
-// mock 动画类
-vi.mock('../src/animations', () => ({
-  Anime3DBoxSpin: vi.fn().mockImplementation(() => ({
-    create: vi.fn(() => {
-      const div = document.createElement('div')
-      div.className = 'chyk-anime-3D-box-spin'
-      return div
-    }),
-  })),
-  AnimeFlower: vi.fn().mockImplementation(() => ({
-    create: vi.fn(() => {
-      const canvas = document.createElement('canvas')
-      canvas.className = 'chyk-anime-flower'
-      return canvas
-    }),
-  })),
-}))
+vi.mock('../src/animations', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../src/animations')>()
+
+  return {
+    ...actual,                       // 先把原始所有导出原封不动带回来
+    // 下面再“局部覆盖”你需要的几个构造器
+    Anime3DBoxSpin: vi.fn(() => ({
+      create: vi.fn(() => {
+        const div = document.createElement('div')
+        div.className = 'chyk-anime-3D-box-spin'
+        return div
+      }),
+    })),
+    AnimeFlower: vi.fn(),
+  }
+})
+
 
 
 
@@ -62,7 +63,6 @@ describe('AnimationManager', () => {
   })
 
   it('3dBox 异常且 debug=true 时才打印错误', async () => {
-    // vi.resetModules();
     // 1. 强制模拟抛出错误
     const mockError = new Error('mock-3d-error');
     const { Anime3DBoxSpin } = vi.hoisted(() => ({
@@ -70,25 +70,37 @@ describe('AnimationManager', () => {
         create: vi.fn(() => { throw mockError; }),
       })),
     }));
-
     vi.doMock('../src/animations', () => ({
       Anime3DBoxSpin,
     }));
-
     const { AnimationManager } = await import('../src/managers/AnimationManager');
-
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
-
     const mgr = new AnimationManager(true, '', '');
     mgr.render(animeEl, textEl, '3dBox');
-
     expect(consoleSpy).toHaveBeenCalledWith('[PreloadScreen] Failed to create 3D box animation', expect.any(Error));
-
     consoleSpy.mockRestore();
   });
 
+  it('petal 异常且 debug=true 时才打印错误', async () => {
+    const mockError = new Error('mock-petal-error');
+    const { AnimeFlower } = vi.hoisted(() => ({
+      AnimeFlower: vi.fn(() => { throw mockError; }),
+    }));
+    vi.doMock('../src/animations', () => ({
+      AnimeFlower,
+    }));
+    const { AnimationManager } = await import('../src/managers/AnimationManager');
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
 
+    const mgr = new AnimationManager(true, '', '');
+    mgr.render(animeEl, textEl, 'petal');
 
+    expect(consoleSpy).toHaveBeenCalledWith(
+      '[PreloadScreen] Failed to create petal animation',
+      expect.any(Error)
+    );
+    consoleSpy.mockRestore();
+  });
 
 
 });
