@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-09-25 14:07:04
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-26 16:50:45
+ * @LastEditTime: 2025-09-27 10:29:17
  * @FilePath: \preload-screen\vitest.config.ts
  */
 import { defineConfig } from "vitest/config";
@@ -14,5 +14,10 @@ export default defineConfig({
       reporter: ["text", "json", "html"],
     },
     include: ["__tests__/**/*.test.ts"], // 测试文件位置
+    includeSource: ['src/**/*.ts'],// 把所有 ts 都当成源码转译
+  },
+  esbuild: {
+    target: 'node18',   // 或 node16，按你实际版本
+    // 把语法降级到 es2020 以下，readonly 会被擦掉
   },
 });

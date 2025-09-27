@@ -5,4 +5,4 @@
  * @FilePath: \sourceHTML\preload-screen\src\animation\index.ts
  */
 export { Anime3DBoxSpin } from "./Anime3DBoxSpin";
-export { Flower } from "./AnimeFlower";
+export { AnimeFlower } from "./AnimeFlower";

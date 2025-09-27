@@ -1,11 +1,11 @@
 /*
  * @Date: 2025-09-25 13:47:32
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-25 16:52:24
- * @FilePath: \sourceHTML\preload-screen\src\managers\AnimationManager.ts
+ * @LastEditTime: 2025-09-27 14:45:21
+ * @FilePath: \preload-screen\src\managers\AnimationManager.ts
  */
 import { Anime3DBoxSpin } from "../animations/Anime3DBoxSpin";
-import { Flower } from "../animations/AnimeFlower";
+import { AnimeFlower } from "../animations/AnimeFlower";
 
 export class AnimationManager {
   constructor(private debug: boolean, private color: string, private text: string) { }
@@ -38,7 +38,7 @@ export class AnimationManager {
     try {
       const canvas = document.createElement('canvas');
       animeEl.appendChild(canvas);
-      new Flower(canvas);
+      new AnimeFlower(canvas);
     } catch (e) {
       if (this.debug) { console.error('[PreloadScreen] Failed to create petal animation', e); }
     }

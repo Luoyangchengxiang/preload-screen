@@ -1,13 +1,13 @@
 /*
  * @Date: 2025-09-25 11:18:58
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-25 11:32:00
- * @FilePath: \sourceHTML\preload-screen\src\animation\AnimeFlower.ts
+ * @LastEditTime: 2025-09-27 10:20:14
+ * @FilePath: \preload-screen\src\animations\AnimeFlower.ts
  */
 
 import type { FlowerConfig } from '../types';
 
-export class Flower {
+export class AnimeFlower {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private config: FlowerConfig;
