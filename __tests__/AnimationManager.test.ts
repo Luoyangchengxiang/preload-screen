@@ -1,6 +1,5 @@
 // __tests__/AnimationManager.test.ts
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import type { Mock } from 'vitest';
 import { AnimationManager } from '../src/managers/AnimationManager';
 
 
