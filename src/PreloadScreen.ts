@@ -1,9 +1,11 @@
 import "./css/style.css"
-import type { PreloadConfig } from "./types";
+import type { PreloadConfig, DomRenderContext, LogoConfig } from "./types";
 import { ConfigManager } from "./managers/ConfigManager";
 import { DOMManager } from "./managers/DOMManager";
+import { ProgressManager } from "./managers/ProgressManager";
 import { AnimationManager } from "./managers/AnimationManager";
 import { LifecycleManager } from "./managers/LifecycleManager";
+
 declare global {
   interface Window {
     preloadHide?: () => void;
@@ -14,6 +16,7 @@ export class PreloadScreen {
 
   private config: ConfigManager;
   private dom: DOMManager;
+  private progress: ProgressManager;
   private animation: AnimationManager;
   private lifecycle: LifecycleManager;
 
@@ -23,6 +26,13 @@ export class PreloadScreen {
 
     // 初始化 DOM
     this.dom = new DOMManager(this.config);
+
+    // 初始化进度管理器
+    this.progress = new ProgressManager(
+      this.config.debug,
+      this.config.color,
+      this.config.text
+    );
 
     // 初始化动画管理器
     this.animation = new AnimationManager(
@@ -35,7 +45,7 @@ export class PreloadScreen {
     this.updateDOM();
 
     // 生命周期控制（auto/manual 模式、hide 调度）
-    this.lifecycle = new LifecycleManager(this.config, this.dom, this.animation);
+    this.lifecycle = new LifecycleManager(this.config, this.dom, this.progress, this.animation);
 
     if (this.config.debug) {
       console.log(
@@ -65,7 +75,7 @@ export class PreloadScreen {
 
     // 如果模式切换到 auto，需要重新绑定
     if (prevMode !== this.config.mode && this.config.mode === "auto") {
-      this.lifecycle = new LifecycleManager(this.config, this.dom, this.animation);
+      this.lifecycle = new LifecycleManager(this.config, this.dom, this.progress, this.animation);
     }
 
     if (this.config.debug) {
@@ -79,23 +89,37 @@ export class PreloadScreen {
 
   /** 更新 DOM （动画 / logo 显示） */
   private updateDOM() {
-    const elements = this.dom.queryElements();
-    if (!elements) {
-      if (this.config.debug) {
+    const renderContext = {
+      elements: this.dom.queryElements(),
+      logoSrc: this.dom.getLogoSrc() ?? '',
+      config: this.config,
+      debug: this.config.debug
+    }
+
+    if (!renderContext.elements) {
+      if (renderContext.debug) {
         console.error("[PreloadScreen] preload elements not found", performance.now());
       }
       return;
     }
 
-    const { animeEl, textEl, logoEl } = elements;
-    const logoSrc = this.dom.getLogoSrc();
-
-    if (logoSrc) {
-      this.dom.showLogo(logoEl, animeEl, textEl, logoSrc);
+    if (renderContext.logoSrc) {
+      this.renderLogo(renderContext);
     } else {
-      this.dom.showAnimation(logoEl, animeEl, textEl);
-      this.animation.render(animeEl, textEl, this.config.animeStyle);
+      this.renderAnimation(renderContext);
     }
+  }
+
+  private renderLogo(context: Required<DomRenderContext<ConfigManager>>) {
+    const { progressEl } = context.elements!;
+    this.dom.showLogo(context.elements!);
+    this.progress.render(progressEl, '', this.config.logoConfig as LogoConfig);
+  }
+
+  private renderAnimation(context: DomRenderContext<ConfigManager>) {
+    const { animeEl, textEl } = context.elements!;
+    this.dom.showAnimation(context.elements!);
+    this.animation.render(animeEl, textEl, context.config.animeStyle);
   }
 
   /** 手动隐藏 */

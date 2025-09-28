@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-09-25 13:51:29
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-25 16:36:36
- * @FilePath: \sourceHTML\preload-screen\src\managers\LifecycleManager.ts
+ * @LastEditTime: 2025-09-28 17:10:47
+ * @FilePath: \preload-screen\src\managers\LifecycleManager.ts
  * @Description: 1.绑定自动移除逻辑（auto 模式）
  * 2.监听 app-ready 或全局 window.preloadHide
  * 3.处理 hide 前的最小展示时间逻辑
@@ -10,7 +10,7 @@
 import type { ConfigManager } from "./ConfigManager";
 import type { DOMManager } from "./DOMManager";
 import type { AnimationManager } from "./AnimationManager";
-
+import type { ProgressManager } from "./ProgressManager";
 export class LifecycleManager {
   private createdAt = Date.now();
   private removed = false;
@@ -20,23 +20,28 @@ export class LifecycleManager {
   constructor(
     private config: ConfigManager,
     private dom: DOMManager,
-    private animation: AnimationManager
+    private progress?: ProgressManager,
+    private animation?: AnimationManager,
   ) {
     this.bindAutoRemove();
   }
 
   /** 绑定自动移除逻辑 */
   private bindAutoRemove() {
+
     if (this.removed || this.autoBound) return;
 
     // 监听根元素变化
     const bindObserve = (root: HTMLElement) => {
       if (this.autoBound) return;
       this.autoBound = true;
-
       const observer = new MutationObserver(() => {
-        const hasContent = root.textContent?.trim() !== "";
-        if (hasContent) {
+        const hasRealContent = Array.from(root.childNodes).some(
+          n =>
+            n.nodeType === Node.ELEMENT_NODE || // 真实元素
+            (n.nodeType === Node.TEXT_NODE && n.textContent!.trim().length > 0)
+        );
+        if (hasRealContent && root.children.length > 0) {
           observer.disconnect();
           this.beforeHide("content-loaded");
         }
@@ -56,13 +61,13 @@ export class LifecycleManager {
           if (root) {
             clearInterval(interval);
             bindObserve(root);
-          } else if (++attempts >= 100) {
+          } else if (++attempts >= (this.config.maxAttempts ?? 100)) {
             clearInterval(interval);
             if (this.config.debug) {
               console.warn(`[PreloadScreen] 未找到指定元素 #${this.config.elId}`);
             }
           }
-        }, 50);
+        }, this.config.checkInterval ?? 50);
       }
     }
 
@@ -84,20 +89,18 @@ export class LifecycleManager {
     if (this.removed || this.hideScheduled) return;
 
     const elapsed = Date.now() - this.createdAt;
-    const wait = this.config.minShow - elapsed;
+    const wait = Math.max(0, this.config.minShow - elapsed);
     this.hideScheduled = true;
-
-    if (wait > 0) {
-      setTimeout(() => this.hide(), wait);
-    } else {
-      this.hide();
-    }
+    setTimeout(() => this.hide(), wait);
   }
 
   /** 真正隐藏元素 */
   private hide() {
     if (this.removed) return;
     this.removed = true;
-    this.dom.fadeOutAndRemove(this.config.fadeOut);
+    this.progress?.done();
+    setTimeout(() => {
+      this.dom.fadeOutAndRemove(this.config.fadeOut);
+    }, 200);
   }
 }

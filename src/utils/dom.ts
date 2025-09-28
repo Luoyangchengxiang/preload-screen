@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-09-25 11:15:30
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-25 16:56:49
- * @FilePath: \sourceHTML\preload-screen\src\utils\dom.ts
+ * @LastEditTime: 2025-09-28 10:58:16
+ * @FilePath: \preload-screen\src\utils\dom.ts
  */
 import type { ConfigManager } from "../managers/ConfigManager";
 export function handleElementVisible(instance: ConfigManager, visible: boolean, elementNode?: HTMLElement[]) {
@@ -39,6 +39,9 @@ export function createDOM(instance: ConfigManager): HTMLElement {
   const logoEl = document.createElement('div');
   logoEl.className = 'chyk-view chyk-preload-logo';
 
+  const logoProgress = document.createElement('div');
+  logoProgress.className = 'chyk-view chyk-preload-progress';
+
   const animeEl = document.createElement('div');
   animeEl.className = 'chyk-view chyk-preload-anime';
 
@@ -46,9 +49,10 @@ export function createDOM(instance: ConfigManager): HTMLElement {
   textEl.className = 'chyk-view chyk-preload-text';
   textEl.textContent = instance.text;
 
-  handleElementVisible(instance, false, [logoEl, animeEl, textEl])
+  handleElementVisible(instance, false, [logoEl, logoProgress, animeEl, textEl])
 
   wrapper.appendChild(logoEl);
+  wrapper.appendChild(logoProgress);
   wrapper.appendChild(animeEl);
   wrapper.appendChild(textEl);
 

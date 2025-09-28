@@ -6,6 +6,8 @@ export interface PreloadConfig {
   minShow?: number;
   fadeOut?: number;
   mode?: PreloadMode;
+  maxAttempts?: number;
+  checkInterval?: number;
   text?: string;
   color?: string;
   debug?: boolean;
@@ -17,8 +19,18 @@ export interface LogoConfig {
   src: string;
   width?: string;
   height?: string;
+  rounded?: string;
+  progress?: ProgressConfig;
   [key: string]: any;
 }
+
+export type ProgressConfig = {
+  stroke?: number;
+  isShowText?: boolean;
+  color?: string;
+  textColor?: string;
+  textSize?: number;
+};
 
 export type FlowerConfig = {
   petalCount: number;
@@ -33,3 +45,17 @@ export type FlowerConfig = {
   centerColor: string;
   blendMode: GlobalCompositeOperation;
 };
+
+export interface PreloadElements {
+  animeEl: HTMLElement;
+  progressEl: HTMLElement;
+  textEl: HTMLElement;
+  logoEl: HTMLElement;
+}
+
+export type DomRenderContext<T extends Partial<PreloadConfig>> = {
+  elements: PreloadElements | null,
+  config: T,
+  debug: boolean,
+  logoSrc?: string | undefined
+}

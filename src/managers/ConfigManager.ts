@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-09-25 13:45:21
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-25 16:35:07
- * @FilePath: \sourceHTML\preload-screen\src\managers\ConfigManager.ts
+ * @LastEditTime: 2025-09-28 15:14:36
+ * @FilePath: \preload-screen\src\managers\ConfigManager.ts
  */
 import { config } from "../config";
 import type { PreloadConfig, PreloadMode, LogoConfig, AnimeStyle } from "../types";
@@ -17,11 +17,13 @@ export class ConfigManager {
       minShow: merged.minShow ?? 300,
       fadeOut: merged.fadeOut ?? 500,
       mode: merged.mode ?? "auto",
+      maxAttempts: merged.maxAttempts ?? 100,
+      checkInterval: merged.checkInterval ?? 50,
       text: merged.text ?? "Loading...",
       color: merged.color ?? "#1890ff",
       debug: merged.debug ?? false,
-      logoConfig: merged.logoConfig ?? "",
       animeStyle: merged.animeStyle ?? "spin",
+      logoConfig: merged.logoConfig ?? "",
     };
     this.ensureElId();
   }
@@ -49,6 +51,8 @@ export class ConfigManager {
   get minShow() { return this.options.minShow }
   get fadeOut() { return this.options.fadeOut }
   get mode(): PreloadMode { return this.options.mode }
+  get maxAttempts() { return this.options.maxAttempts }
+  get checkInterval() { return this.options.checkInterval }
   get text() { return this.options.text }
   get color() { return this.options.color }
   get debug() { return this.options.debug }

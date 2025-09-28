@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-09-25 15:29:18
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-26 11:21:52
- * @FilePath: \sourceHTML\preload-screen\examples\vue\main.ts
+ * @LastEditTime: 2025-09-28 17:45:29
+ * @FilePath: \preload-screen\examples\vue\main.ts
  */
 import { createApp } from "vue";
 import App from "./App.vue";
@@ -18,6 +18,17 @@ const loader = initPreloadScreen({
   color: "#1890ff",
   animeStyle: '3dBox',
   debug: true,
+  logoConfig: {
+    src: './assets/logo.png',
+    width: '300px',
+    height: '300px',
+    rounded: '5%',
+    progress: {
+      stroke: 0,
+      isShowText: true,
+      textColor: 'orange'
+    }
+  }
 })
 
 // entryFileNames: `preload-screen.[format]-[hash].js`,
@@ -31,7 +42,7 @@ function awaitTimeout(ms: number) {
     // window.dispatchEvent(new CustomEvent('app-ready'))
     // window.preloadHide();
     loader.hide();
-  }, 5000);
+  }, 500000);
   // await awaitTimeout(100000);
   const app = createApp(App);
   app.mount("#app");

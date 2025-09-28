@@ -1,10 +1,7 @@
-@import url("./box-loading.css");
-
 .chyk-p-30 {
   padding: 30px;
 }
 
-/* src/style.css */
 #chyk-preload-screen {
   position: fixed;
   top: 0;
@@ -41,27 +38,7 @@
   animation: spin 1s linear infinite;
 }
 
-.chyk-anime-snow {
-  animation: snowflake 0.1s linear infinite;
-}
-
-.chyk-anime-petal {
-  animation: petal 0.1s linear infinite;
-}
-
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes snowflake {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes petal {
   to {
     transform: rotate(360deg);
   }
@@ -71,4 +48,9 @@
   margin-top: 12px;
   font-size: 14px;
   color: #666;
+}
+
+.chyk-preload-progress {
+  min-width: 300px;
+  text-align: center;
 }

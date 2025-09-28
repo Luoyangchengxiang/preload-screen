@@ -1,0 +1,12 @@
+.chyk-default-progress-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: #1890ff;
+  width: 0;
+  transition: width .2s;
+}
+
+.chyk-default-progress-text {
+  font-size: 14px;
+  color: #666;
+}
