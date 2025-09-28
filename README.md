@@ -122,9 +122,9 @@ pnpm add preload-screen
   | ------------------------- | ------------- | ------------- | -------------------------------------- |
   | ```logoConfig```          | ```string```  | -             | 可直接以logoConfig为属性，传入图片路径 |
   | ```src```                 | ```string```  | -             | 图片路径                               |
-  | ```width```               | ```string```  | -             | 图片宽度                               |
-  | ```height```              | ```string```  | -             | 图片高度                               |
-  | ```rounded```             | ```string```  | -             | 图片圆角                               |
+  | ```width```               | ```string```  | ```150px```   | 图片宽度                               |
+  | ```height```              | ```string```  | ```150px```   | 图片高度                               |
+  | ```rounded```             | ```string```  | ```0px```     | 图片圆角                               |
   | ```progress```            | ```object```  | -             | 进度条配置项                           |
   | ```progress.stroke```     | ```number```  | ```4px```     | 进度条宽度                             |
   | ```progress.color```      | ```string```  | ```#1890ff``` | 进度条颜色                             |
