@@ -133,19 +133,6 @@ pnpm add preload-screen
   | ```progress.textSize```   | ```number```  | ```14```      | 进度数值文字大小                       |
   ------------------------------------------------------------------------------------------------------------------------------------
 
-  
-  logoConfig: {
-    src: './assets/logo.png',
-    width: '300px',
-    height: '300px',
-    rounded: '5%',
-    progress: {
-      stroke: 0,
-      isShowText: true,
-      textColor: 'orange'
-    }
-  }
-
 
 ## 🖐 手动 API
   即使在 ```manual``` 模式之外，也可以随时手动触发：
