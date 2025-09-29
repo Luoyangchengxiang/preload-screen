@@ -1,6 +1,6 @@
 export type PreloadMode = 'auto' | 'manual';
 export type AnimeStyle = 'spin' | '3dBox' | 'petal';
-
+export type ProgressStyle = 'bar' | 'rainbow' | 'default';
 export interface PreloadConfig {
   elId?: string;
   minShow?: number;
@@ -11,20 +11,23 @@ export interface PreloadConfig {
   text?: string;
   color?: string;
   debug?: boolean;
-  logoConfig?: LogoConfig | string;
+  logo?: string;
+  logoConfig?: LogoConfig | null;
   animeStyle?: AnimeStyle;
 }
 
 export interface LogoConfig {
-  src: string;
-  width?: string;
-  height?: string;
-  rounded?: string;
+  mode?: string;
+  width?: string | number;
+  height?: string | number;
+  rounded?: string | number;
+  backgroundMode?: string;
   progress?: ProgressConfig;
   [key: string]: any;
 }
 
 export type ProgressConfig = {
+  mode?: ProgressStyle;
   stroke?: number;
   isShowText?: boolean;
   color?: string;
@@ -57,5 +60,4 @@ export type DomRenderContext<T extends Partial<PreloadConfig>> = {
   elements: PreloadElements | null,
   config: T,
   debug: boolean,
-  logoSrc?: string | undefined
 }

@@ -10,3 +10,14 @@
   font-size: 14px;
   color: #666;
 }
+
+@keyframes moveBar {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 40px 0;
+  }
+
+}

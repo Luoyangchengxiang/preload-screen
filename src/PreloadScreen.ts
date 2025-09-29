@@ -2,6 +2,7 @@ import "./css/style.css"
 import type { PreloadConfig, DomRenderContext, LogoConfig } from "./types";
 import { ConfigManager } from "./managers/ConfigManager";
 import { DOMManager } from "./managers/DOMManager";
+import { LogoManager } from "./managers/LogoManager";
 import { ProgressManager } from "./managers/ProgressManager";
 import { AnimationManager } from "./managers/AnimationManager";
 import { LifecycleManager } from "./managers/LifecycleManager";
@@ -16,6 +17,7 @@ export class PreloadScreen {
 
   private config: ConfigManager;
   private dom: DOMManager;
+  private preloadLogo: LogoManager;
   private progress: ProgressManager;
   private animation: AnimationManager;
   private lifecycle: LifecycleManager;
@@ -26,6 +28,8 @@ export class PreloadScreen {
 
     // 初始化 DOM
     this.dom = new DOMManager(this.config);
+
+    this.preloadLogo = new LogoManager(this.config.debug, this.config.logo, this.config.logoConfig);
 
     // 初始化进度管理器
     this.progress = new ProgressManager(
@@ -91,7 +95,7 @@ export class PreloadScreen {
   private updateDOM() {
     const renderContext = {
       elements: this.dom.queryElements(),
-      logoSrc: this.dom.getLogoSrc() ?? '',
+      logoSrc: this.config.logo ?? '',
       config: this.config,
       debug: this.config.debug
     }
@@ -111,9 +115,10 @@ export class PreloadScreen {
   }
 
   private renderLogo(context: Required<DomRenderContext<ConfigManager>>) {
-    const { progressEl } = context.elements!;
+    const { logoEl, progressEl } = context.elements!;
     this.dom.showLogo(context.elements!);
-    this.progress.render(progressEl, '', this.config.logoConfig as LogoConfig);
+    this.preloadLogo.render(logoEl, context.config.logoConfig, context.config.logoConfig?.mode);
+    this.progress.render(progressEl, context.config.logoConfig?.progress?.mode, this.config.logoConfig);
   }
 
   private renderAnimation(context: DomRenderContext<ConfigManager>) {

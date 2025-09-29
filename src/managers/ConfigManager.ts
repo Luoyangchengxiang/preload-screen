@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-09-25 13:45:21
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-28 15:14:36
+ * @LastEditTime: 2025-09-29 11:06:19
  * @FilePath: \preload-screen\src\managers\ConfigManager.ts
  */
 import { config } from "../config";
@@ -23,7 +23,8 @@ export class ConfigManager {
       color: merged.color ?? "#1890ff",
       debug: merged.debug ?? false,
       animeStyle: merged.animeStyle ?? "spin",
-      logoConfig: merged.logoConfig ?? "",
+      logo: merged.logo ?? "",
+      logoConfig: merged.logoConfig ?? null,
     };
     this.ensureElId();
   }
@@ -56,6 +57,7 @@ export class ConfigManager {
   get text() { return this.options.text }
   get color() { return this.options.color }
   get debug() { return this.options.debug }
-  get logoConfig(): LogoConfig | string { return this.options.logoConfig }
+  get logo(): string { return this.options.logo }
+  get logoConfig(): LogoConfig | null { return this.options.logoConfig }
   get animeStyle(): AnimeStyle { return this.options.animeStyle }
 }

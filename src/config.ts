@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-09-18 15:58:13
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-25 16:34:52
- * @FilePath: \sourceHTML\preload-screen\src\config.ts
+ * @LastEditTime: 2025-09-29 10:44:26
+ * @FilePath: \preload-screen\src\config.ts
  */
 import type { PreloadConfig } from './types';
 
@@ -23,6 +23,7 @@ export const config: PreloadConfig = {
   minShow: 300,
   fadeOut: 500,
   mode: "auto",
-  logoConfig: '',
+  logo: '',
+  logoConfig: null,
   animeStyle: 'spin',
 };

@@ -1,16 +1,19 @@
 /*
  * @Date: 2025-09-25 13:47:32
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-28 14:16:35
+ * @LastEditTime: 2025-09-29 11:05:34
  * @FilePath: \preload-screen\src\managers\AnimationManager.ts
  */
 import { Anime3DBoxSpin, AnimeFlower } from "../loading-anim-builder-kit";
 
 export class AnimationManager {
+  private rendered: boolean = false;
   constructor(private debug: boolean, private color: string, private text: string) { }
 
   render(animeEl: HTMLElement, textEl: HTMLElement, style: string) {
     if (this.debug) { console.info(`[PreloadScreen] The currently selected animation: ${style}`); }
+    if (this.rendered) { return; }
+    this.rendered = true;
     switch (style) {
       case "3dBox":
         this.render3DBox(animeEl);

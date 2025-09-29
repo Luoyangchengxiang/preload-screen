@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-09-25 15:29:18
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-28 17:45:29
+ * @LastEditTime: 2025-09-29 11:49:04
  * @FilePath: \preload-screen\examples\vue\main.ts
  */
 import { createApp } from "vue";
@@ -18,15 +18,17 @@ const loader = initPreloadScreen({
   color: "#1890ff",
   animeStyle: '3dBox',
   debug: true,
+  logo: './assets/logo.png',
   logoConfig: {
-    src: './assets/logo.png',
-    width: '300px',
-    height: '300px',
+    width: 300,
+    height: 300,
     rounded: '5%',
     progress: {
-      stroke: 0,
+      stroke: 6,
       isShowText: true,
-      textColor: 'orange'
+      color: "#FF0",
+      textColor: 'orange',
+      mode: 'rainbow'
     }
   }
 })

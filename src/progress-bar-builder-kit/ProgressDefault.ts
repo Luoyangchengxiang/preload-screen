@@ -6,11 +6,11 @@ export class PDefault {
   private readonly ProgTextClassName: string = 'chyk-default-progress-text';
   private prog: number = 0;
   private maxProg: number = 99;
-  private wrapperProgress: HTMLElement | null = null;
-  private progressText: HTMLElement | null = null;
+  protected wrapperProgress: HTMLElement | null = null;
+  protected progressText: HTMLElement | null = null;
   private timer: NodeJS.Timeout | null = null;
-  private config: ProgressConfig | undefined;
-  constructor(config?: LogoConfig) {
+  protected config: ProgressConfig | undefined;
+  constructor(config?: LogoConfig | null) {
     this.config = config?.progress;
   }
   public create(): HTMLDivElement {
@@ -28,7 +28,7 @@ export class PDefault {
     return progress;
   }
 
-  private setupDOM() {
+  protected setupDOM() {
     const wrapperProgress = document.createElement('div');
     wrapperProgress.className = this.ProgClassName;
     if (this.config?.color) {
@@ -57,7 +57,7 @@ export class PDefault {
     this.wrapperProgress.style.width = `${this.prog}%`;
   }
 
-  private setProgress(progressNumber: number) {
+  protected setProgress(progressNumber: number) {
     if (!this.wrapperProgress) return;
     this.prog = progressNumber;
     this.wrapperProgress.style.width = `${this.prog}%`;
