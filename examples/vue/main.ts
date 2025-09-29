@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-09-25 15:29:18
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-29 11:49:04
+ * @LastEditTime: 2025-09-29 12:00:33
  * @FilePath: \preload-screen\examples\vue\main.ts
  */
 import { createApp } from "vue";
@@ -26,9 +26,9 @@ const loader = initPreloadScreen({
     progress: {
       stroke: 6,
       isShowText: true,
-      color: "#FF0",
-      textColor: 'orange',
-      mode: 'rainbow'
+      // color: "#FF0",
+      textColor: '#999999',
+      textSize: 12
     }
   }
 })
