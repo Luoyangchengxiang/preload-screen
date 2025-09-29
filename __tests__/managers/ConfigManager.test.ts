@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { ConfigManager } from '../src/managers/ConfigManager';
-import type { PreloadConfig } from '../src/types';
+import { ConfigManager } from '../../src/managers/ConfigManager';
+import type { PreloadConfig } from '../../src/types';
 
 describe('ConfigManager', () => {
   /* 每次把 body 清干净，防止 ID 污染 */
@@ -18,7 +18,7 @@ describe('ConfigManager', () => {
     expect(cm.text).toBe('Loading...');
     expect(cm.color).toBe('#1890ff');
     expect(cm.debug).toBe(false);
-    expect(cm.logoConfig).toBe('');
+    expect(cm.logoConfig).toBe(null);
     expect(cm.animeStyle).toBe('spin');
   });
 

@@ -1,14 +1,9 @@
 // __tests__/AnimationManager.test.ts
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { AnimationManager } from '../src/managers/AnimationManager';
-
-
-vi.mock('../src/animations', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../src/animations')>()
+import { AnimationManager } from '../../src/managers/AnimationManager';
+vi.mock('../loading-anim-builder-kit', async () => {
 
   return {
-    ...actual,                       // 先把原始所有导出原封不动带回来
-    // 下面再“局部覆盖”你需要的几个构造器
     Anime3DBoxSpin: vi.fn(() => ({
       create: vi.fn(() => {
         const div = document.createElement('div')
@@ -62,21 +57,38 @@ describe('AnimationManager', () => {
   })
 
   it('3dBox 异常且 debug=true 时才打印错误', async () => {
-    // 1. 强制模拟抛出错误
+    // 1. 创建一个强制抛错的 mock create 方法
     const mockError = new Error('mock-3d-error');
-    const { Anime3DBoxSpin } = vi.hoisted(() => ({
-      Anime3DBoxSpin: vi.fn(() => ({
-        create: vi.fn(() => { throw mockError; }),
-      })),
+
+    const Anime3DBoxSpin = vi.fn().mockImplementation(() => ({
+      create: vi.fn(() => {
+        throw mockError;
+      }),
     }));
-    vi.doMock('../src/animations', () => ({
+
+    // 2. 动态 mock 模块
+    vi.doMock('../../src/loading-anim-builder-kit', () => ({
       Anime3DBoxSpin,
     }));
-    const { AnimationManager } = await import('../src/managers/AnimationManager');
+
+    // 3. 导入被测试模块（必须在 mock 后）
+    const { AnimationManager } = await import('../../src/managers/AnimationManager');
+
+    // 4. 创建 spy 监控 console.error
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+
+    // 5. 执行被测方法
     const mgr = new AnimationManager(true, '', '');
+    const animeEl = document.createElement('div');
+    const textEl = document.createElement('div');
     mgr.render(animeEl, textEl, '3dBox');
-    expect(consoleSpy).toHaveBeenCalledWith('[PreloadScreen] Failed to create 3D box animation', expect.any(Error));
+
+    // 6. 断言 console.error 被调用
+    expect(consoleSpy).toHaveBeenCalledWith(
+      '[PreloadScreen] Failed to create 3D box animation',
+      expect.any(Error)
+    );
+
     consoleSpy.mockRestore();
   });
 
@@ -85,10 +97,10 @@ describe('AnimationManager', () => {
     const { AnimeFlower } = vi.hoisted(() => ({
       AnimeFlower: vi.fn(() => { throw mockError; }),
     }));
-    vi.doMock('../src/animations', () => ({
+    vi.doMock('../loading-anim-builder-kit', () => ({
       AnimeFlower,
     }));
-    const { AnimationManager } = await import('../src/managers/AnimationManager');
+    const { AnimationManager } = await import('../../src/managers/AnimationManager');
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
 
     const mgr = new AnimationManager(true, '', '');

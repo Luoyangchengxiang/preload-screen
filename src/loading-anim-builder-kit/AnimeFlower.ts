@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-09-25 11:18:58
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-27 10:20:14
- * @FilePath: \preload-screen\src\animations\AnimeFlower.ts
+ * @LastEditTime: 2025-09-29 17:01:07
+ * @FilePath: \preload-screen\src\loading-anim-builder-kit\AnimeFlower.ts
  */
 
 import type { FlowerConfig } from '../types';
@@ -15,7 +15,7 @@ export class AnimeFlower {
 
   constructor(canvas: HTMLCanvasElement, config?: Partial<FlowerConfig>) {
     this.canvas = canvas;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas?.getContext('2d');
     if (!ctx) throw new Error('无法获取 2D context');
     this.ctx = ctx;
     this.config = Object.assign({

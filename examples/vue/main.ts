@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-09-25 15:29:18
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-29 12:00:33
+ * @LastEditTime: 2025-09-29 17:21:55
  * @FilePath: \preload-screen\examples\vue\main.ts
  */
 import { createApp } from "vue";
@@ -16,9 +16,9 @@ const loader = initPreloadScreen({
   fadeOut: 500,
   text: "Loading...",
   color: "#1890ff",
-  animeStyle: '3dBox',
+  animeStyle: 'petal',
   debug: true,
-  logo: './assets/logo.png',
+  // logo: './assets/logo.png',
   logoConfig: {
     width: 300,
     height: 300,
