@@ -6,7 +6,7 @@ export class PDefault {
   private readonly ProgClassName: string = 'chyk-default-progress-bar';
   private readonly ProgTextClassName: string = 'chyk-default-progress-text';
   private prog: number = 0;
-  private maxProg: number = 99;
+  private maxProg: number = 70;
   protected wrapperProgress: HTMLElement | null = null;
   protected progressText: HTMLElement | null = null;
   private timer: NodeJS.Timeout | null = null;
