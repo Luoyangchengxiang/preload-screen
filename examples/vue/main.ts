@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-09-25 15:29:18
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-30 14:31:40
+ * @LastEditTime: 2025-09-30 18:01:31
  * @FilePath: \preload-screen\examples\vue\main.ts
  */
 import { createApp } from "vue";
@@ -18,8 +18,12 @@ const loader = initPreloadScreen({
   color: "#FF0011",
   // animeStyle: '3dBox',
   // debug: true,
-  logo: './assets/logo.png',
+  logo: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="40" />
+  </svg>`,
   logoConfig: {
+    mode: 'svg',
+    color: '#FF0',
     anime: 'asymptotic',
     width: '150px',
     height: 150,
@@ -30,7 +34,6 @@ const loader = initPreloadScreen({
       // color: "#FF0",
       textColor: '#999999',
       textSize: 12,
-
     }
   }
 })
@@ -46,7 +49,7 @@ function awaitTimeout(ms: number) {
     // window.dispatchEvent(new CustomEvent('app-ready'))
     // window.preloadHide();
     loader.hide();
-  }, 5000);
+  }, 500000);
   // await awaitTimeout(100000);
   const app = createApp(App);
   app.mount("#app");

@@ -1,1 +1,2 @@
-export { DLogo } from './LogoDefault'
+export { DLogo } from './LogoDefault';
+export { SVGLogo } from './LogoSVG';

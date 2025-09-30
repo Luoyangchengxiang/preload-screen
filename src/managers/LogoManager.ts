@@ -1,5 +1,5 @@
 import "../css/logo.css"
-import { DLogo } from "../builders/logo-style-builder-kit";
+import { DLogo, SVGLogo } from "../builders/logo-style-builder-kit";
 import type { LogoConfig } from "../types";
 export class LogoManager {
   private rendered: boolean = false;
@@ -9,11 +9,30 @@ export class LogoManager {
 
   render(logoEl: HTMLElement, config: LogoConfig | null, mode?: string) {
     if (this.rendered) return;
+    let anime = this.config?.anime;
+    if (anime && logoEl) {
+      switch (anime) {
+        case 'asymptotic':
+          logoEl.classList.add("chyk-anime-asymptotic")
+          logoEl.classList.remove("chyk-anime-rotate", "chyk-anime-flicker");
+          break;
+        case 'rotate':
+          logoEl.classList.add("chyk-anime-rotate")
+          logoEl.classList.remove("chyk-anime-asymptotic", "chyk-anime-flicker");
+          break;
+        case 'flicker':
+          logoEl.classList.add("chyk-anime-flicker")
+          logoEl.classList.remove("chyk-anime-asymptotic", "chyk-anime-rotate");
+          break;
+        default:
+          break;
+      }
+    }
     this.rendered = true;
     switch (mode) {
-      // case 'svg':
-
-      //   break;
+      case 'svg':
+        this.renderSVG(logoEl, config);
+        break;
 
       default:
         this.renderDefault(logoEl, config);
@@ -27,6 +46,15 @@ export class LogoManager {
       logoEl.appendChild(logo.create());
     } catch (error) {
       if (this.debug) { console.error("[PreloadScreen] Failed to create default logo", error); }
+    }
+  }
+
+  private renderSVG(logoEl: HTMLElement, config?: LogoConfig | null) {
+    try {
+      const svgLogo = new SVGLogo(this.debug, this.logo, this.config);
+      logoEl.appendChild(svgLogo.create());
+    } catch (error) {
+      if (this.debug) { console.error("[PreloadScreen] Failed to create SVG logo", error); }
     }
   }
 
