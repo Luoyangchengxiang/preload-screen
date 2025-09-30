@@ -11,8 +11,14 @@ const resetModule = async () => {
   return mod;
 };
 
+function advance(ms: number) {
+  vi.advanceTimersByTime(ms);
+}
+
 describe('index.ts', () => {
   beforeEach(async () => {
+    vi.clearAllMocks();
+    vi.useFakeTimers();
     // 每个测试前重置模块状态
     vi.resetModules();
     // 模拟 console.warn
@@ -20,8 +26,11 @@ describe('index.ts', () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     // 恢复所有模拟
+    vi.unstubAllGlobals();
     vi.restoreAllMocks();
+    vi.clearAllTimers();
   });
 
   describe('总入口模块index', () => {
@@ -93,7 +102,7 @@ describe('index.ts', () => {
       const initSpy = vi.spyOn(mod.PreloadScreen, 'init');
 
       // 等待 setTimeout 执行
-      await new Promise(resolve => setTimeout(resolve, 10));
+      advance(10)
 
       expect(initSpy).toHaveBeenCalledWith(undefined);
     });
@@ -106,7 +115,7 @@ describe('index.ts', () => {
       mod.initPreloadScreen({ debug: true });
 
       // 等待 setTimeout 执行
-      await new Promise(resolve => setTimeout(resolve, 10));
+      advance(10)
 
       // 验证 PreloadScreen.initPreloadScreen 只被调用一次（用户调用的那次）
       expect(initSpy).toHaveBeenCalledTimes(1);

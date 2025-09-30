@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { LogoManager } from '../../src/managers/LogoManager';
-import { DLogo } from '../../src/logo-style-builder-kit';
+import { DLogo } from '../../src/builders/logo-style-builder-kit';
 
 // 模拟 DLogo 类
-vi.mock('../../src/logo-style-builder-kit', () => {
+vi.mock('../../src/builders/logo-style-builder-kit', () => {
   return {
     DLogo: vi.fn().mockImplementation(() => {
       return {

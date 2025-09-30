@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-09-25 15:29:18
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-30 11:30:24
+ * @LastEditTime: 2025-09-30 14:31:40
  * @FilePath: \preload-screen\examples\vue\main.ts
  */
 import { createApp } from "vue";
@@ -46,7 +46,7 @@ function awaitTimeout(ms: number) {
     // window.dispatchEvent(new CustomEvent('app-ready'))
     // window.preloadHide();
     loader.hide();
-  }, 500000);
+  }, 5000);
   // await awaitTimeout(100000);
   const app = createApp(App);
   app.mount("#app");

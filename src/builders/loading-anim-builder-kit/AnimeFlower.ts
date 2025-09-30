@@ -5,7 +5,7 @@
  * @FilePath: \preload-screen\src\loading-anim-builder-kit\AnimeFlower.ts
  */
 
-import type { FlowerConfig } from '../types';
+import type { FlowerConfig } from '../../types';
 
 export class AnimeFlower {
   private canvas: HTMLCanvasElement;

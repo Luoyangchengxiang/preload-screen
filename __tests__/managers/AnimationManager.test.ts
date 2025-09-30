@@ -1,7 +1,7 @@
 // __tests__/AnimationManager.test.ts
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { AnimationManager } from '../../src/managers/AnimationManager';
-vi.mock('../loading-anim-builder-kit', async () => {
+vi.mock('../../src/builders/loading-anim-builder-kit', async () => {
 
   return {
     Anime3DBoxSpin: vi.fn(() => ({
@@ -67,7 +67,7 @@ describe('AnimationManager', () => {
     }));
 
     // 2. 动态 mock 模块
-    vi.doMock('../../src/loading-anim-builder-kit', () => ({
+    vi.doMock('../../src/builders/loading-anim-builder-kit', () => ({
       Anime3DBoxSpin,
     }));
 
@@ -97,7 +97,7 @@ describe('AnimationManager', () => {
     const { AnimeFlower } = vi.hoisted(() => ({
       AnimeFlower: vi.fn(() => { throw mockError; }),
     }));
-    vi.doMock('../loading-anim-builder-kit', () => ({
+    vi.doMock('../../src/builders/loading-anim-builder-kit', () => ({
       AnimeFlower,
     }));
     const { AnimationManager } = await import('../../src/managers/AnimationManager');

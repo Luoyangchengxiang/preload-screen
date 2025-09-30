@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ProgressManager } from '../../src/managers/ProgressManager';
-import { PDefault, PRainbow, PBar } from '../../src/progress-bar-builder-kit';
+import { PDefault, PRainbow, PBar } from '../../src/builders/progress-bar-builder-kit';
 import { handleUnits } from '../../src/utils/helpers';
 
 // 模拟依赖模块
@@ -15,7 +15,7 @@ vi.mock('../../src/utils/helpers', () => {
   };
 });
 
-vi.mock('../../src/progress-bar-builder-kit', () => {
+vi.mock('../../src/builders/progress-bar-builder-kit', () => {
   const mockProgressBar = {
     create: vi.fn().mockReturnValue(document.createElement('div')),
     done: vi.fn()

@@ -1,5 +1,5 @@
-import { LogoConfig } from "../types";
-import { handleUnits } from "../utils/helpers";
+import { LogoConfig } from "../../types";
+import { handleUnits } from "../../utils/helpers";
 export class DLogo {
   private readonly LogoClassName: string = 'chyk-default-logo';
   protected logoConfig: LogoConfig | null = null;

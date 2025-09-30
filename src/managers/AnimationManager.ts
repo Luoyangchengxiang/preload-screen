@@ -5,7 +5,7 @@
  * @FilePath: \preload-screen\src\managers\AnimationManager.ts
  */
 import "../css/box-loading.css"
-import { Anime3DBoxSpin, AnimeFlower } from "../loading-anim-builder-kit";
+import { Anime3DBoxSpin, AnimeFlower } from "../builders/loading-anim-builder-kit";
 
 export class AnimationManager {
   private rendered: boolean = false;

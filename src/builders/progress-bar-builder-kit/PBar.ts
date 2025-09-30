@@ -1,5 +1,5 @@
 import { PDefault } from './ProgressDefault';
-import type { LogoConfig } from '../types';
+import type { LogoConfig } from '../../types';
 
 export class PBar extends PDefault {
 

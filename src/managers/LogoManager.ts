@@ -1,5 +1,5 @@
 import "../css/logo.css"
-import { DLogo } from "../logo-style-builder-kit";
+import { DLogo } from "../builders/logo-style-builder-kit";
 import type { LogoConfig } from "../types";
 export class LogoManager {
   private rendered: boolean = false;

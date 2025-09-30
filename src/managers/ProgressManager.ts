@@ -1,6 +1,6 @@
 import { handleUnits } from "../utils/helpers";
 import "../css/logo-progress.css"
-import { PDefault, PRainbow, PBar } from "../progress-bar-builder-kit";
+import { PDefault, PRainbow, PBar } from "../builders/progress-bar-builder-kit";
 import type { LogoConfig, ProgressStyle } from "../types";
 export class ProgressManager {
   private rendered: boolean = false;

@@ -1,5 +1,5 @@
-import { handleUnits } from "../utils/helpers";
-import type { LogoConfig, ProgressConfig } from "../types";
+import { handleUnits } from "../../utils/helpers";
+import type { LogoConfig, ProgressConfig } from "../../types";
 
 export class PDefault {
   private readonly ProgClassName: string = 'chyk-default-progress-bar';
