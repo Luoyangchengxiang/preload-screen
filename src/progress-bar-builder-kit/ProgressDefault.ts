@@ -1,4 +1,4 @@
-import { handleUnits } from "src/utils/helpers";
+import { handleUnits } from "../utils/helpers";
 import "../css/logo-progress.css"
 import type { LogoConfig, ProgressConfig } from "../types";
 

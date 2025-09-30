@@ -1,10 +1,10 @@
 /*
  * @Date: 2025-09-25 13:45:21
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-29 11:06:19
+ * @LastEditTime: 2025-09-30 10:17:16
  * @FilePath: \preload-screen\src\managers\ConfigManager.ts
  */
-import { handleUnits } from "src/utils/helpers";
+import { handleUnits } from "../utils/helpers";
 import { config } from "../config";
 import type { PreloadConfig, PreloadMode, LogoConfig, AnimeStyle } from "../types";
 
