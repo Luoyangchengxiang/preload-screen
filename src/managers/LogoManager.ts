@@ -1,3 +1,4 @@
+import "../css/logo.css"
 import { DLogo } from "../logo-style-builder-kit";
 import type { LogoConfig } from "../types";
 export class LogoManager {

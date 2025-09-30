@@ -1,0 +1,46 @@
+.chyk-anime-asymptotic {
+  animation: chyk-asymptotic 0.3s ease-in-out forwards;
+}
+
+.chyk-anime-rotate {
+  animation: chyk-rotate 0.3s linear forwards;
+}
+
+.chyk-anime-flicker {
+  animation: chyk-flicker 0.3s ease-in-out forwards;
+}
+
+
+@keyframes chyk-asymptotic {
+  0% {
+    transform: scale3d(0.4, 0.4, 0.4)
+  }
+
+  100% {
+    transform: scale3d(1, 1, 1)
+  }
+}
+
+@keyframes chyk-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes chyk-flicker {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
