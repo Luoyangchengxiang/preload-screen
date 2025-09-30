@@ -1,6 +1,7 @@
 export type PreloadMode = 'auto' | 'manual';
 export type AnimeStyle = 'spin' | '3dBox' | 'petal';
 export type ProgressStyle = 'bar' | 'rainbow' | 'default';
+export type LogoAnime = 'asymptotic' | 'rotate' | 'flicker';
 export interface PreloadConfig {
   elId?: string;
   minShow?: number;
@@ -21,6 +22,7 @@ export interface LogoConfig {
   width?: string | number;
   height?: string | number;
   rounded?: string | number;
+  anime?: LogoAnime;
   backgroundMode?: string;
   progress?: ProgressConfig;
   [key: string]: any;

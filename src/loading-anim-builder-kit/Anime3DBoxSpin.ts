@@ -5,8 +5,6 @@
  * @FilePath: \sourceHTML\preload-screen\src\animations\Anime3DBoxSpin.ts
  */
 
-import "../css/box-loading.css"
-
 export class Anime3DBoxSpin {
   private readonly AnimeClassName: string = 'chyk-anime-3D-box-spin';
   constructor() {

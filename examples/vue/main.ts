@@ -1,15 +1,15 @@
 /*
  * @Date: 2025-09-25 15:29:18
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-30 10:07:14
+ * @LastEditTime: 2025-09-30 10:44:14
  * @FilePath: \preload-screen\examples\vue\main.ts
  */
 import { createApp } from "vue";
 import App from "./App.vue";
 // import "@chyk/preload-screen";
-import { initPreloadScreen } from "@chyk/preload-screen";
+// import { initPreloadScreen } from "@chyk/preload-screen";
 // import "../../src/index";
-// import { initPreloadScreen } from "../../src/index";
+import { initPreloadScreen } from "../../src/index";
 const loader = initPreloadScreen({
   mode: "manual",
   minShow: 300,
@@ -20,15 +20,17 @@ const loader = initPreloadScreen({
   debug: true,
   logo: './assets/logo.png',
   logoConfig: {
+    anime: 'asymptotic',
     width: '300px',
     height: 300,
     rounded: 5,
     progress: {
       stroke: 6,
-      isShowText: true,
+      isShowText: false,
       // color: "#FF0",
       textColor: '#999999',
-      textSize: 12
+      textSize: 12,
+
     }
   }
 })

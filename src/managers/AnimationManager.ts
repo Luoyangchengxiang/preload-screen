@@ -1,9 +1,10 @@
 /*
  * @Date: 2025-09-25 13:47:32
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-29 18:00:06
+ * @LastEditTime: 2025-09-30 10:46:54
  * @FilePath: \preload-screen\src\managers\AnimationManager.ts
  */
+import "../css/box-loading.css"
 import { Anime3DBoxSpin, AnimeFlower } from "../loading-anim-builder-kit";
 
 export class AnimationManager {

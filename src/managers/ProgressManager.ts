@@ -1,3 +1,4 @@
+import "../css/logo-progress.css"
 import { PDefault, PRainbow, PBar } from "../progress-bar-builder-kit";
 import type { LogoConfig, ProgressStyle } from "../types";
 export class ProgressManager {

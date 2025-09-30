@@ -1,5 +1,4 @@
 import { handleUnits } from "../utils/helpers";
-import "../css/logo-progress.css"
 import type { LogoConfig, ProgressConfig } from "../types";
 
 export class PDefault {
