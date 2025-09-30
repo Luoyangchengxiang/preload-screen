@@ -4,6 +4,7 @@
  * @LastEditTime: 2025-09-29 11:06:19
  * @FilePath: \preload-screen\src\managers\ConfigManager.ts
  */
+import { handleUnits } from "src/utils/helpers";
 import { config } from "../config";
 import type { PreloadConfig, PreloadMode, LogoConfig, AnimeStyle } from "../types";
 
@@ -14,11 +15,11 @@ export class ConfigManager {
     const merged = { ...config, ...userOptions };
     this.options = {
       elId: merged.elId ?? "",
-      minShow: merged.minShow ?? 300,
-      fadeOut: merged.fadeOut ?? 500,
+      minShow: handleUnits(merged.minShow) ?? 300,
+      fadeOut: handleUnits(merged.fadeOut) ?? 500,
       mode: merged.mode ?? "auto",
-      maxAttempts: merged.maxAttempts ?? 100,
-      checkInterval: merged.checkInterval ?? 50,
+      maxAttempts: handleUnits(merged.maxAttempts) ?? 100,
+      checkInterval: handleUnits(merged.checkInterval) ?? 50,
       text: merged.text ?? "Loading...",
       color: merged.color ?? "#1890ff",
       debug: merged.debug ?? false,

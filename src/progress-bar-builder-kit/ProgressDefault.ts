@@ -1,5 +1,6 @@
+import { handleUnits } from "src/utils/helpers";
 import "../css/logo-progress.css"
-import type { LogoConfig, ProgressConfig } from "src/types";
+import type { LogoConfig, ProgressConfig } from "../types";
 
 export class PDefault {
   private readonly ProgClassName: string = 'chyk-default-progress-bar';
@@ -35,8 +36,8 @@ export class PDefault {
       wrapperProgress.style.background = this.config.color;
     }
     if (this.config?.stroke || this.config?.stroke === 0) {
-      wrapperProgress.style.height = `${this.config.stroke}px`;
-      wrapperProgress.style.borderRadius = `${this.config.stroke / 2}px`;
+      wrapperProgress.style.height = `${handleUnits(this.config.stroke) ?? 4}px`;
+      wrapperProgress.style.borderRadius = `${(handleUnits(this.config.stroke) ?? 4) / 2}px`;
     }
     this.wrapperProgress = wrapperProgress;
 
@@ -46,7 +47,7 @@ export class PDefault {
       progressText.style.color = this.config.textColor;
     }
     if (this.config?.textSize) {
-      progressText.style.fontSize = `${this.config.textSize}px`;
+      progressText.style.fontSize = `${handleUnits(this.config.textSize) ?? 14}px`;
     }
     this.progressText = progressText;
     return { wrapperProgress, progressText };

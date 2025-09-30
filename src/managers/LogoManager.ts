@@ -1,5 +1,5 @@
 import { DLogo } from "../logo-style-builder-kit";
-import type { LogoConfig } from "src/types";
+import type { LogoConfig } from "../types";
 export class LogoManager {
   private rendered: boolean = false;
   // private instanceLogo: LDefault | null = null;

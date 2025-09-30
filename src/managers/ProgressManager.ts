@@ -1,5 +1,5 @@
 import { PDefault, PRainbow, PBar } from "../progress-bar-builder-kit";
-import type { LogoConfig, ProgressStyle } from "src/types";
+import type { LogoConfig, ProgressStyle } from "../types";
 export class ProgressManager {
   private rendered: boolean = false;
   private instanceProg: PDefault | null = null;
