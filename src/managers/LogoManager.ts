@@ -11,7 +11,7 @@ export class LogoManager {
     if (this.rendered) return;
     this.rendered = true;
     switch (mode) {
-      case 'value':
+      case 'svg':
 
         break;
 

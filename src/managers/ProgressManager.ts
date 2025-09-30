@@ -1,3 +1,4 @@
+import { handleUnits } from "../utils/helpers";
 import "../css/logo-progress.css"
 import { PDefault, PRainbow, PBar } from "../progress-bar-builder-kit";
 import type { LogoConfig, ProgressStyle } from "../types";
@@ -9,6 +10,7 @@ export class ProgressManager {
   render(progressEl: HTMLElement, mode: ProgressStyle | undefined, config?: LogoConfig | null) {
     if (this.debug) { console.info(`[PreloadScreen] The currently selected progress style: ${mode}`); }
     if (this.rendered) { return; }
+    progressEl.style.width = `${handleUnits(config?.width) ?? 300}px`;
     this.rendered = true;
     switch (mode) {
       case 'bar':
