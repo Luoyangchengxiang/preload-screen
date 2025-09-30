@@ -11,9 +11,9 @@ export class LogoManager {
     if (this.rendered) return;
     this.rendered = true;
     switch (mode) {
-      case 'svg':
+      // case 'svg':
 
-        break;
+      //   break;
 
       default:
         this.renderDefault(logoEl, config);
