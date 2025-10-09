@@ -42,9 +42,16 @@
     "@types/node": "^24.5.2",
     "jsdom": "^27.0.0",
     "typescript": "^5.9.2",
-    "vite": "^7.1.7",
     "vite-plugin-dts": "^4.5.4",
     "vite-plugin-libcss": "^1.1.2",
     "vitest": "^3.2.4"
+  },
+  "peerDependencies": {
+    "vite": "^7.0.0"
+  },
+  "peerDependenciesMeta": {
+    "vite": {
+      "optional": true
+    }
   }
 }

@@ -31,5 +31,3 @@ setTimeout(() => {
     initPreloadScreen();                      // 用默认配置跑
   }
 }, 0);
-
-
