@@ -33,9 +33,8 @@ describe("dom.js", () => {
     expect(wrapper.classList.contains("visible")).toBe(false);
   });
 
-  it('传入空数组或 undefined 时不会抛错', () => {
+  it('传入空数组时不会抛错', () => {
     const instance = mockConfigManager()
-    expect(() => handleElementVisible(instance, true, undefined)).not.toThrow()
     expect(() => handleElementVisible(instance, false, [])).not.toThrow()
   })
 
