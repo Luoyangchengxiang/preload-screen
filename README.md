@@ -148,7 +148,7 @@ pnpm add preload-screen
 
 [MIT © 2025](https://github.com/Luoyangchengxiang/preload-screen?tab=MIT-1-ov-file#)
 
-## v1.0.3 - 2025-09-28 更新日志
+## v1.2.1 - 2025-09-28 更新日志
 
 ### ✨ Added 新增功能 
   新增 ```logoConfig``` 配置项，展示为：图片+进度条样式  
