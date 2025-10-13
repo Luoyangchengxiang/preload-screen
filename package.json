@@ -8,6 +8,7 @@
     "release": "pnpm build && pnpm -r test && pnpm --filter preload-screen release"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.7",
     "rimraf": "^6.0.1"
   }
 }
