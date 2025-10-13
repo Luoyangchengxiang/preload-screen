@@ -1,0 +1,56 @@
+name: CI
+
+# 触发时机：push / PR 到 monorepo 或 main 分支
+on:
+  push:
+    branches: [monorepo, main]
+  pull_request:
+    branches: [monorepo, main]
+
+# 并发组：同一分支最新 commit 取消旧任务
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 拉代码
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. 装 pnpm（指定版本，防止 CI 用旧版）
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      # 3. 装 Node 20 + 缓存 pnpm 仓库
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      # 4. 安装依赖（--frozen-lockfile 保证一致性）
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 5. 跑所有子包测试
+      - name: Run tests
+        run: pnpm test
+
+      # 6. 构建全仓库
+      - name: Build packages
+        run: pnpm build
+
+      # 7. （可选）上传构建产物，方便下载/发版
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: |
+            core/*/dist
+            examples/*/dist
+          retention-days: 7
