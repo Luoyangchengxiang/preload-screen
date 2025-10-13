@@ -1,57 +1,13 @@
 {
-  "name": "preload-screen",
-  "version": "1.2.1",
-  "type": "module",
-  "description": "页面挂载前显示loading动画",
-  "main": "dist/preload-screen.umd.js",
-  "module": "dist/preload-screen.es.js",
-  "types": "dist/types/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "test": "vitest",
-    "test:watch": "vitest watch",
-    "test:coverage": "vitest run --coverage",
-    "release": "node builds/scripts/release.js"
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "dev": "pnpm -r --parallel dev",
+    "clean": "pnpm -r exec rimraf dist node_modules/.vite .turbo .rollup.cache",
+    "clean:hard": "rimraf node_modules pnpm-lock.yaml && pnpm -r exec rimraf node_modules",
+    "release": "pnpm build && pnpm -r test && pnpm --filter preload-screen release"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Luoyangchengxiang/preload-screen.git"
-  },
-  "keywords": [
-    "react",
-    "preloadScreen",
-    "screen",
-    "preload",
-    "loading",
-    "skeleton",
-    "spinner",
-    "preload-screen"
-  ],
-  "author": {
-    "name": "Aaron Cheng",
-    "email": "aaron.cheng.luoyang@gmail.com"
-  },
-  "license": "MIT",
-  "homepage": "https://github.com/Luoyangchengxiang/preload-screen#readme",
-  "packageManager": "pnpm@10.15.1",
   "devDependencies": {
-    "@types/node": "^24.5.2",
-    "jsdom": "^27.0.0",
-    "typescript": "^5.9.2",
-    "vite-plugin-dts": "^4.5.4",
-    "vite-plugin-libcss": "^1.1.2",
-    "vitest": "^3.2.4"
-  },
-  "peerDependencies": {
-    "vite": "^7.0.0"
-  },
-  "peerDependenciesMeta": {
-    "vite": {
-      "optional": true
-    }
+    "rimraf": "^6.0.1"
   }
 }

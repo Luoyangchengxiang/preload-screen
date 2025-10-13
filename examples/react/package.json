@@ -1,19 +1,22 @@
 {
-  "name": "preload-screen-web-react",
+  "name": "@examples/react",
   "private": true,
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "dev:hmr": "vite --force --config vite.config.ts",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "preload-screen": "workspace:*",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.4",
     "typescript": "^5.9.2",
     "vite": "^7.1.7"
   }

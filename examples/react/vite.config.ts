@@ -1,16 +1,16 @@
-/*
- * @Date: 2025-09-25 15:29:05
- * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-25 15:43:17
- * @FilePath: \sourceHTML\preload-screen\examples\react\vite.config.ts
- */
-import { defineConfig } from "vite";
-import path from 'node:path'
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  resolve: {
-    alias: {
-      "@chyk/preload-screen": path.resolve(__dirname, '../../dist/preload-screen.es.js')
+  plugins: [react()],
+  server: {
+    fs: {
+      allow: [
+        // 允许插件源码目录
+        '../../core/preload-screen/src',
+        // 允许示例自身
+        '..'
+      ]
     }
   }
-});
+})

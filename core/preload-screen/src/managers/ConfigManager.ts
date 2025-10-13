@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-09-25 13:45:21
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-30 10:17:16
- * @FilePath: \preload-screen\src\managers\ConfigManager.ts
+ * @LastEditTime: 2025-10-13 11:47:52
+ * @FilePath: \preload-screen\core\preload-screen\src\managers\ConfigManager.ts
  */
 import { handleUnits } from "../utils/helpers";
 import { config } from "../config";
@@ -13,6 +13,8 @@ export class ConfigManager {
 
   constructor(userOptions?: Partial<PreloadConfig>) {
     const merged = { ...config, ...userOptions };
+    console.log(`%c ${merged.text}`, "color: red;");
+
     this.options = {
       elId: merged.elId ?? "",
       minShow: handleUnits(merged.minShow) ?? 300,

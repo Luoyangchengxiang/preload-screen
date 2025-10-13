@@ -1,19 +1,11 @@
-/*
- * @Date: 2025-09-25 15:29:18
- * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-30 17:53:10
- * @FilePath: \preload-screen\examples\vue\vite.config.ts
- */
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import path from "path";
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
-  resolve: {
-    alias: {
-      // "@chyk/preload-screen": path.resolve(__dirname, '../../dist/preload-screen.es.js')
-      "@chyk/preload-screen": path.resolve(__dirname, '../../src/index.ts')
+  server: {
+    fs: {
+      allow: ['../../core/preload-screen/src', '..']
     }
   }
-});
+})

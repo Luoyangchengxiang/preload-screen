@@ -1,5 +1,5 @@
 {
-  "name": "preload-screen-web-vue",
+  "name": "@examples/vue",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -8,7 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.5.22"
+    "vue": "^3.5.22",
+    "preload-screen": "workspace:*"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.1",

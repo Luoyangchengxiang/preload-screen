@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-09-18 15:58:13
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-29 10:44:26
- * @FilePath: \preload-screen\src\config.ts
+ * @LastEditTime: 2025-10-13 13:49:35
+ * @FilePath: \preload-screen\core\preload-screen\src\config.ts
  */
 import type { PreloadConfig } from './types';
 

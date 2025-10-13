@@ -1,4 +1,4 @@
-import { handleUnits } from "../..//utils/helpers";
+import { handleUnits } from "../../utils/helpers";
 import { LogoConfig } from "../../types";
 
 export class SVGLogo {
