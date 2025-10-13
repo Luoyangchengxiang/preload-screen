@@ -24,7 +24,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
 
       # 3. 装 Node 20 + 缓存 pnpm 仓库
       - name: Setup Node
