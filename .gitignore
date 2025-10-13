@@ -4,64 +4,86 @@
 # ==========================================
 
 # ******** 一、系统级 ********
+
 ## macOS 索引文件
 .DS_Store              
+
 ## Windows 缩略图缓存
 Thumbs.db              
+
 ## 任意日志
 *.log                  
 
 
 # ******** 二、Node / pnpm ********
 
+
 ## 依赖包（pnpm 用硬链接，无需提交）
 node_modules/          
+
 ## pnpm 本地仓库缓存
 .pnpm-store/           
+
 ## pnpm 安装调试日志
 .pnpm-debug.log*       
+
 ## TypeScript 增量编译缓存
 *.tsbuildinfo          
+
 ## 本地私有 npm 配置（含令牌）
 .npmrc.local           
 
 
 # ******** 三、构建产物 ********
 
+
 ## Vite/Rollup 默认输出目录
 dist/                  
+
 ## 某些工具默认目录
 build/                 
+
 ## 若你手动指定过
 lib/                   
+
 ## npm pack 临时包
 *.tgz                  
+
 ## 任意压缩包
 *.tar.gz               
 
 
 # ******** 四、测试 & 覆盖率 ********
 
+
 ## nyc、c8、vitest coverage
 coverage/              
+
 ## nyc 原始数据
 .nyc_output/           
+
 ## lcov 报告文件
 *.lcov                 
 
 
 # ******** 五、IDE & 编辑器 ********
 
+
 ## VSCode 工作区配置（如你「确定」要共享设置，可删）
 .vscode/               
+
 ## Local History 插件历史文件
 .history/              
+
 ## JetBrains 系列
 .idea/                 
+
 ## Vim 交换文件
 *.swp                  
+
 ## Vim 交换文件
 *.swo                  
+
 ## Linux 临时备份
 *~                     
 
@@ -70,24 +92,31 @@ coverage/
 
 *.tmp
 *.temp
+
 ## 任意工具缓存（eslint-loader、parcel 等）
 .cache/                
 .parcel-cache/
 .rollup.cache/
+
 ## Turbo 构建缓存
 .turbo/                
+
 ## Nx 缓存
 .nx/                   
+
 ## rollup-plugin-typescript2
 .rpt2_cache/           
+
 ## Vite 本地优化缓存（<= v2 旧版）
 .vite                  
 
 
 # ******** 七、环境 & 密钥 ********
 
+
 ## 任何环境变量文件（按需要可再加 .env.local 等）
 .env                   
+
 ## 本地私有环境变量
 .env.*.local           
 *.key
@@ -97,24 +126,32 @@ coverage/
 
 # ******** 八、Monorepo 专用 ********
 
+
 ## 若你习惯把每个子包 dist 也忽略
 packages/*/dist        
+
 ## 示例构建产物
 examples/*/dist        
+
 ## Lerna 缓存（如以后迁移）
 .lerna/                
+
 ## 防止同事混用 yarn
 yarn-error.log         
+
 ## 强制使用 pnpm，屏蔽 npm/yarn lock
 package-lock.json      
+
 ## 同上
 yarn.lock              
 
 
 # ******** 九、GitHub Actions 本地调试 ********
 
+
 ## `act`  CLI 本地运行 Actions 的缓存
 .github/act/           
+
 ## 自托管 runner 临时文件（如有）
 .github/runner/        
 
@@ -133,7 +170,14 @@ yarn.lock
 
 # ******** 十二、其他可选（按需要打开） ********
 
-# docs/                # 若你自动生成文档，又不想提交
-# public/              # 某些脚手架会把 public 也拷贝到 dist，可忽略
-# *.config.local.js    # 本地私有配置
-# .changeset/*.md      # 若你只想在发布前才提交 changeset
+## 若你自动生成文档，又不想提交
+# docs/                
+
+## 某些脚手架会把 public 也拷贝到 dist，可忽略
+# public/              
+
+## 本地私有配置
+# *.config.local.js    
+
+## 若你只想在发布前才提交 changeset
+# .changeset/*.md      
