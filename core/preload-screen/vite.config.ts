@@ -1,8 +1,8 @@
 /*
  * @Date: 2025-09-25 14:06:37
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-25 18:02:14
- * @FilePath: \sourceHTML\preload-screen\vite.config.ts
+ * @LastEditTime: 2025-10-13 16:41:59
+ * @FilePath: \preload-screen\core\preload-screen\vite.config.ts
  */
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
@@ -10,6 +10,7 @@ import libCss from "vite-plugin-libcss";
 
 export default defineConfig({
   build: {
+    target: "esnext",
     lib: {
       entry: "src/index.ts",
       name: "PreloadScreen", // 必须，UMD/IIFE 全局变量名

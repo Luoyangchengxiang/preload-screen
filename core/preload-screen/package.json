@@ -11,9 +11,9 @@
   ],
   "exports": {
     ".": {
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/preload-screen.es.js",
-      "require": "./dist/preload-screen.umd.js",
-      "types": "./dist/types/index.d.ts"
+      "require": "./dist/preload-screen.umd.js"
     }
   },
   "scripts": {

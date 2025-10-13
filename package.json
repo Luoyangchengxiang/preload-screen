@@ -1,14 +1,16 @@
 {
+  "packageManager": "pnpm@10.15.0",
   "scripts": {
-    "build": "pnpm -r build",
-    "test": "pnpm -r test",
-    "dev": "pnpm -r --parallel dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "dev": "turbo run dev",
     "clean": "pnpm -r exec rimraf dist node_modules/.vite .turbo .rollup.cache",
     "clean:hard": "rimraf node_modules pnpm-lock.yaml && pnpm -r exec rimraf node_modules",
-    "release": "pnpm build && pnpm -r test && pnpm --filter preload-screen release"
+    "release": "turbo run build test && pnpm --filter preload-screen release"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.7",
-    "rimraf": "^6.0.1"
+    "rimraf": "^6.0.1",
+    "turbo": "^2.5.8"
   }
 }
