@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-09-18 15:58:13
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-10-13 13:49:35
+ * @LastEditTime: 2025-10-15 10:26:15
  * @FilePath: \preload-screen\core\preload-screen\src\config.ts
  */
 import type { PreloadConfig } from './types';
@@ -17,13 +17,13 @@ import type { PreloadConfig } from './types';
  */
 export const config: PreloadConfig = {
   debug: false,
-  elId: '',
+  // elId: '',
   color: "#1890ff",
   text: "Loading...",
   minShow: 300,
   fadeOut: 500,
-  mode: "auto",
-  logo: '',
-  logoConfig: null,
-  animeStyle: 'spin',
+  // mode: "auto",
+  // logo: '',
+  // logoConfig: null,
+  // animeStyle: 'spin',
 };
