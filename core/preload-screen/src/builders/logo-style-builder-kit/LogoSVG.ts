@@ -20,7 +20,6 @@ export class SVGLogo {
     const svgDoc = parser.parseFromString(this.logoSrc, "image/svg+xml");
     const svgEl = svgDoc.documentElement;
     svgEl.classList.add(this.LogoClassName);
-    console.log(this.logoConfig, "==================");
 
     if (this.logoConfig?.width) svgEl.setAttribute("width", this.logoConfig.width.toString());
     if (this.logoConfig?.height) svgEl.setAttribute("height", this.logoConfig.height.toString());
