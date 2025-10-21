@@ -21,11 +21,13 @@ vi.mock('../../src/builders/loading-anim-builder-kit', async () => {
 describe('AnimationManager', () => {
   let animeEl: HTMLElement;
   let textEl: HTMLElement;
+  let mgr: AnimationManager;
 
   beforeEach(() => {
     vi.resetModules();
     animeEl = document.createElement('div');
     textEl = document.createElement('div');
+    mgr = new AnimationManager(true, 'blue', 'Loading...');
   });
 
   afterEach(() => {
@@ -44,46 +46,37 @@ describe('AnimationManager', () => {
     expect(animeEl.style.borderTopColor).toMatch(/#00ff00|rgb\(0\s*,\s*255\s*,\s*0\)/);
   })
 
-  it('渲染 3dBox 分支，在 animeEl 元素中插入 3dBox 动画', () => {
+  it('渲染 3dBox 分支，在 animeEl 元素中插入 3dBox 动画', async () => {
     const mgr = new AnimationManager(false, '', '');
-    mgr.render(animeEl, textEl, '3dBox');
+    await mgr.render(animeEl, textEl, '3dBox');
     expect(animeEl.querySelector('.chyk-anime-3D-box-spin')).toBeTruthy();
   })
 
-  it('渲染 petal 分支，在 animeEl 元素中插入 canvas petal 动画', () => {
+  it('渲染 petal 分支，在 animeEl 元素中插入 canvas petal 动画', async () => {
     const mgr = new AnimationManager(false, '', '');
-    mgr.render(animeEl, textEl, 'petal');
+    await mgr.render(animeEl, textEl, 'petal');
     expect(animeEl.querySelector('canvas')).toBeTruthy();
   })
 
   it('3dBox 异常且 debug=true 时才打印错误', async () => {
     // 1. 创建一个强制抛错的 mock create 方法
     const mockError = new Error('mock-3d-error');
-
-    const Anime3DBoxSpin = vi.fn().mockImplementation(() => ({
-      create: vi.fn(() => {
-        throw mockError;
-      }),
+    // 2. 动态覆盖Anime3DBoxSpin模块，使其抛出错误
+    vi.doMock('../../src/builders/loading-anim-builder-kit/Anime3DBoxSpin', () => ({
+      Anime3DBoxSpin: vi.fn().mockImplementation(() => ({
+        create: vi.fn(() => {
+          throw mockError;
+        }),
+      })),
     }));
 
-    // 2. 动态 mock 模块
-    vi.doMock('../../src/builders/loading-anim-builder-kit', () => ({
-      Anime3DBoxSpin,
-    }));
-
-    // 3. 导入被测试模块（必须在 mock 后）
-    const { AnimationManager } = await import('../../src/managers/AnimationManager');
-
-    // 4. 创建 spy 监控 console.error
+    // 3. 创建 spy 监控 console.error
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
 
-    // 5. 执行被测方法
-    const mgr = new AnimationManager(true, '', '');
-    const animeEl = document.createElement('div');
-    const textEl = document.createElement('div');
-    mgr.render(animeEl, textEl, '3dBox');
+    // 4. 执行被测方法
+    await mgr.render(animeEl, textEl, '3dBox');
 
-    // 6. 断言 console.error 被调用
+    // 5. 断言 console.error 被调用
     expect(consoleSpy).toHaveBeenCalledWith(
       '[PreloadScreen] Failed to create 3D box animation',
       expect.any(Error)
@@ -100,11 +93,10 @@ describe('AnimationManager', () => {
     vi.doMock('../../src/builders/loading-anim-builder-kit', () => ({
       AnimeFlower,
     }));
-    const { AnimationManager } = await import('../../src/managers/AnimationManager');
+
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
 
-    const mgr = new AnimationManager(true, '', '');
-    mgr.render(animeEl, textEl, 'petal');
+    await mgr.render(animeEl, textEl, 'petal');
 
     expect(consoleSpy).toHaveBeenCalledWith(
       '[PreloadScreen] Failed to create petal animation',

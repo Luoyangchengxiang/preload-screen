@@ -1,25 +1,24 @@
 /*
  * @Date: 2025-09-25 13:47:32
  * @LastEditors: Do not edit
- * @LastEditTime: 2025-09-30 10:46:54
- * @FilePath: \preload-screen\src\managers\AnimationManager.ts
+ * @LastEditTime: 2025-10-21 14:28:15
+ * @FilePath: \preload-screen\core\preload-screen\src\managers\AnimationManager.ts
  */
 import "../css/box-loading.css"
-
 export class AnimationManager {
   private rendered: boolean = false;
   constructor(private debug: boolean, private color: string, private text: string) { }
 
-  render(animeEl: HTMLElement, textEl: HTMLElement, mode: string) {
+  async render(animeEl: HTMLElement, textEl: HTMLElement, mode: string) {
     if (this.debug) { console.info(`[PreloadScreen] The currently selected animation: ${mode}`); }
     if (this.rendered) { return; }
     this.rendered = true;
     switch (mode) {
       case "3dBox":
-        this.render3DBox(animeEl);
+        await this.render3DBox(animeEl);
         break;
       case "petal":
-        this.renderPetal(animeEl);
+        await this.renderPetal(animeEl);
         break;
       default:
         this.renderDefault(animeEl, textEl, mode);
