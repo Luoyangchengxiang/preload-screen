@@ -5,7 +5,6 @@
  * @FilePath: \preload-screen\src\managers\AnimationManager.ts
  */
 import "../css/box-loading.css"
-import { Anime3DBoxSpin, AnimeFlower } from "../builders/loading-anim-builder-kit";
 
 export class AnimationManager {
   private rendered: boolean = false;
@@ -28,9 +27,10 @@ export class AnimationManager {
     }
   }
 
-  private render3DBox(animeEl: HTMLElement) {
+  private async render3DBox(animeEl: HTMLElement) {
     try {
       animeEl.classList.add("chyk-p-30");
+      const { Anime3DBoxSpin } = await import("../builders/loading-anim-builder-kit/Anime3DBoxSpin");
       const anime3DBox = new Anime3DBoxSpin();
       const anime3DBoxEl = anime3DBox.create();
       animeEl.appendChild(anime3DBoxEl);
@@ -39,10 +39,11 @@ export class AnimationManager {
     }
   }
 
-  private renderPetal(animeEl: HTMLElement) {
+  private async renderPetal(animeEl: HTMLElement) {
     try {
       const canvas = document.createElement('canvas');
       animeEl.appendChild(canvas);
+      const { AnimeFlower } = await import("../builders/loading-anim-builder-kit/AnimeFlower");
       new AnimeFlower(canvas);
     } catch (e) {
       if (this.debug) { console.error('[PreloadScreen] Failed to create petal animation', e); }
